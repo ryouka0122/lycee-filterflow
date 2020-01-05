@@ -10,7 +10,7 @@ namespace lycee {
 		virtual ~Image();
 		Image();
 		
-		Image clone();
+		Image clone() const;
 
 	private:
 

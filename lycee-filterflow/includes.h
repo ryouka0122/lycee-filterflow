@@ -20,6 +20,7 @@ typedef std::basic_string<TCHAR> lycee_string;
 
 
 #define trif(cond, trueState, falseState)	(cond) ? (trueState) : (falseState)
+#define GRAY(v)		RGB((v), (v), (v))
 
 
 

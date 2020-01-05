@@ -10,6 +10,41 @@ namespace lycee {
 	class Pencil;
 	class Font;
 
+	// ==================================================================
+	// DeviceHandler
+	// ==================================================================
+	class DeviceHandler {
+	public:
+		virtual ~DeviceHandler() = 0 { }
+		virtual HDC getHDC() = 0;
+	};
+
+	class DeviceContextHandler : virtual public DeviceHandler {
+	public:
+		virtual ~DeviceContextHandler();
+		explicit DeviceContextHandler(HDC hTargetDC);
+
+		virtual HDC getHDC();
+	private:
+		HDC hdc;
+	};
+
+	class WindowHandler : virtual public DeviceHandler {
+	public:
+		virtual ~WindowHandler();
+		explicit WindowHandler(HWND hTargetWnd);
+
+		virtual HDC getHDC();
+	private:
+		HWND hWnd;
+		HDC hdc;
+		PAINTSTRUCT ps;
+	};
+
+
+	// ==================================================================
+	// WindowPainter
+	// ==================================================================
 	class WindowPainter {
 	private:
 		WindowPainter(const WindowPainter &other);
@@ -20,6 +55,7 @@ namespace lycee {
 	public:
 		virtual ~WindowPainter();
 		explicit WindowPainter(HWND hWnd);
+		WindowPainter(HDC hdc);
 
 		// ==================================================================
 		// lines 
@@ -42,9 +78,7 @@ namespace lycee {
 		BOOL text(const Pencil &pencil, const Font &font, const lycee_string &text, const RECT &rect, UINT format = 0L);
 
 	private:
-		HWND hWnd;
-		HDC hPaintDC;
-		PAINTSTRUCT ps;
+		DeviceHandler *handler;
 	};
 	
 }	// lycee

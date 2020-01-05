@@ -171,10 +171,28 @@ lycee::Font::~Font()
 {
 }
 
+lycee::Font::Font()
+	: logFont({ 0 })
+{
+	this->initialize(DefaultFontSize, Charset::DEFAULT, TEXT("Meiryo"));
+}
+
 lycee::Font::Font(int size)
 	: logFont({ 0 })
 {
 	this->initialize(size, Charset::DEFAULT, TEXT("Meiryo"));
+}
+
+lycee::Font::Font(const lycee_string &faceName)
+	: logFont({ 0 })
+{
+	this->initialize(DefaultFontSize, Charset::DEFAULT, faceName);
+}
+
+lycee::Font::Font(Charset charset)
+	: logFont({ 0 })
+{
+	this->initialize(DefaultFontSize, charset, TEXT(""));
 }
 
 lycee::Font::Font(int size, const lycee_string &faceName)
@@ -229,6 +247,12 @@ lycee::Font& lycee::Font::operator =(const Font &_Other)
 			&this->logFont, sizeof(this->logFont),
 			&_Other.logFont, sizeof(_Other.logFont));
 	}
+	return *this;
+}
+
+lycee::Font& lycee::Font::size(int szHeight)
+{
+	logFont.lfHeight = szHeight;
 	return *this;
 }
 
