@@ -131,11 +131,15 @@ namespace lycee {
 
 		virtual ~Font();
 
+		Font();
 		Font(int size);
+		Font(const lycee_string &faceName);
+		Font(Charset charset);
 		Font(int size, const lycee_string &faceName);
 		Font(int size, Charset charset);
 
 	private:
+		enum { DefaultFontSize = 16 };
 		void initialize(int size, Charset charset, const lycee_string &faceName);
 
 	public:
@@ -143,6 +147,7 @@ namespace lycee {
 		Font& operator =(const Font &_Other);
 
 	public:
+		Font& size(int szHeight);
 		Font& italic(bool bEnable);
 		Font& bold(bool bEnable);
 		Font& underline(bool bEnable);

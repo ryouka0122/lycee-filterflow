@@ -123,18 +123,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="FilterGraph.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageProcessor.cpp" />
+    <ClCompile Include="LyceeFilterFlow.cpp" />
+    <ClCompile Include="MainEventController.cpp" />
     <ClCompile Include="Panels.cpp" />
+    <ClCompile Include="Program.cpp" />
     <ClCompile Include="Stationary.cpp" />
     <ClCompile Include="WindowPainter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="FilterGraph.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageProcessor.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="LyceeFilterFlow.h" />
     <ClInclude Include="Panels.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stationary.h" />

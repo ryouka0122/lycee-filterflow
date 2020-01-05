@@ -1,20 +1,61 @@
 #include "WindowPainter.h"
 #include "Stationary.h"
 
+// ==================================================================
+// DeviceHandler
+// ==================================================================
 
+lycee::DeviceContextHandler::~DeviceContextHandler()
+{
+}
+
+lycee::DeviceContextHandler::DeviceContextHandler(HDC hTargetDC)
+	: hdc(hTargetDC)
+{
+}
+
+HDC lycee::DeviceContextHandler::getHDC()
+{
+	return this->hdc;
+}
+
+
+lycee::WindowHandler::~WindowHandler()
+{
+	EndPaint(this->hWnd, &this->ps);
+}
+
+lycee::WindowHandler::WindowHandler(HWND hTargetWnd)
+	: hWnd(hTargetWnd),
+	hdc(NULL),
+	ps({ 0 })
+{
+	hdc = BeginPaint(hWnd, &ps);
+}
+
+HDC lycee::WindowHandler::getHDC()
+{
+	return this->hdc;
+}
+
+// ==================================================================
+// WindowPainter
+// ==================================================================
 lycee::WindowPainter::~WindowPainter()
 {
-	EndPaint(hWnd, &ps);
+	delete handler;
 }
 
 lycee::WindowPainter::WindowPainter(HWND hWnd)
-	: hWnd(hWnd),
-	hPaintDC(nullptr),
-	ps()
+	: handler(new lycee::WindowHandler(hWnd))
 {
-	hPaintDC = BeginPaint(hWnd, &ps);
 }
 
+lycee::WindowPainter::WindowPainter(HDC hdc)
+	: handler(new lycee::DeviceContextHandler(hdc))
+{
+
+}
 
 // ==================================================================
 // lines 
@@ -46,7 +87,7 @@ BOOL lycee::WindowPainter::curve(const Pen &pen, int cSize, const LPPOINT pts)
 BOOL lycee::WindowPainter::draw(const Pen &pen, std::function<BOOL(HDC)> callback)
 {
 	return pen.draw(
-		this->hPaintDC,
+		this->handler->getHDC(),
 		callback
 	);
 }
@@ -96,7 +137,7 @@ BOOL lycee::WindowPainter::fill(
 	const Pen &pen,
 	std::function<BOOL(HDC)> callback)
 {
-	return brush.draw(this->hPaintDC, [&](HDC hdc1) {
+	return brush.draw(this->handler->getHDC(), [&](HDC hdc1) {
 		return pen.draw(hdc1, callback);
 	});
 }
@@ -110,7 +151,7 @@ BOOL lycee::WindowPainter::text(
 	const RECT &rect,
 	UINT format)
 {
-	return pencil.draw(this->hPaintDC, [&](HDC hdc1) {
+	return pencil.draw(this->handler->getHDC(), [&](HDC hdc1) {
 		return font.draw(hdc1, [&](HDC hdc2) {
 			RECT r = rect;
 			DrawText(hdc2, text.c_str(), -1, &r, format);

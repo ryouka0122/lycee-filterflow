@@ -10,15 +10,24 @@ namespace lycee {
 
 	class ImageProcessor {
 	public:
-		static ImageProcessor* getDefault();
+		typedef std::function<lycee::Image(const lycee::Image &)> process_functor;
 
 		virtual ~ImageProcessor();
-		explicit ImageProcessor(std::function<lycee::Image(Image)> processor);
+		explicit ImageProcessor(const lycee_string &name, process_functor processor);
+
+		lycee_string name() {
+			return this->__name;
+		}
 
 		Image run(Image srcimg);
 
 	private:
-		std::function<lycee::Image(Image)> processor;
+		lycee_string __name;
+		process_functor processor;
+
+	public:
+		static ImageProcessor* getDefault();
+
 	};
 
 }	// lycee
