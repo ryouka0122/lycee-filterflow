@@ -129,48 +129,22 @@ void lycee::Panel::renderPanel(WindowPainter * painter)
 
 }
 
-lycee::Panel* lycee::Panel::newFilter(
-	const POINT &pos,
-	lycee::ImageProcessor *processor
-)
+bool lycee::Panel::getJointPt(JointType type, LPPOINT lpJointPt) const
 {
-	return new lycee::Panel(
-		TEXT("FILTER"),
-		processor,
-		pos,
-		SIZE{ lycee::PanelProfile::PANEL_WIDTH, lycee::PanelProfile::PANEL_HEIGHT },
-		true,
-		true	
-	);
+	if ( !(type==JointType::INPUT || type==JointType::OUTPUT)
+		|| !this->accept[type]
+		) {
+		return false;
+	}
+	long y = ptPanel.y + szPanel.cy / 2;
+	long x = ptPanel.x;
+	if (type==JointType::INPUT) {
+		x -= PanelProfile::JOINT_WIDTH;
+	}
+	else {
+		x += szPanel.cx + PanelProfile::JOINT_WIDTH;
+	}
+	lpJointPt->x = x;
+	lpJointPt->y = y;
+	return true;
 }
-
-lycee::Panel* lycee::Panel::newInput(
-	const POINT &pos,
-	lycee::ImageProcessor *inputProcessor
-)
-{
-	return new lycee::Panel(
-		TEXT("INPUT"),
-		inputProcessor,
-		pos,
-		SIZE{ lycee::PanelProfile::PANEL_WIDTH, lycee::PanelProfile::PANEL_HEIGHT },
-		false,
-		true
-	);
-}
-
-lycee::Panel* lycee::Panel::newOutput(
-	const POINT &pos,
-	lycee::ImageProcessor *outputProcessor
-)
-{
-	return new lycee::Panel(
-		TEXT("OUTPUT"),
-		outputProcessor,
-		pos,
-		SIZE{ lycee::PanelProfile::PANEL_WIDTH, lycee::PanelProfile::PANEL_HEIGHT },
-		true,
-		false
-	);
-}
-

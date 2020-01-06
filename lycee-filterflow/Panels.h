@@ -46,6 +46,11 @@ namespace lycee {
 		enum { CONTENT_TEXT_SIZE = 25 };
 		enum { CONTENT_MIN_HEIGHT = 80 };
 
+		// ** JOINT LINE PROFILE ** //
+		enum { LINE_BASECOLOR = RGB(0x50, 0x50, 0x50) };
+		enum { LINE_BEGIN_FACECOLOR = RGB(0xFF, 0xFF, 0xFF) };
+		enum { LINE_END_FACECOLOR = RGB(0x00, 0x00, 0x00) };
+		enum { LINE_JOINT_RADIUS = 3 };
 	};
 
 
@@ -97,6 +102,14 @@ namespace lycee {
 			return this->accept[JointType::INPUT] && this->accept[JointType::OUTPUT];
 		}
 
+		enum JointType {
+			INPUT = 0,
+			OUTPUT = 1,
+			JOINT_MAX = 2,
+		};
+
+		bool getJointPt(JointType type, LPPOINT lpJointPt) const;
+
 	private:
 		lycee_string strType;
 		lycee_string strName;
@@ -109,13 +122,8 @@ namespace lycee {
 		RECT rcTitle;
 		RECT rcContent;
 
-		enum JointType {
-			INPUT = 0,
-			OUTPUT = 1,
-			JOINT_MAX = 2
-		};
-		bool accept[2];
-		RECT rcJoint[2];
+		bool accept[JOINT_MAX];
+		RECT rcJoint[JOINT_MAX];
 
 		void calcRenderRect();
 
@@ -123,13 +131,46 @@ namespace lycee {
 		void renderPanel(WindowPainter * painter);
 
 	public:
-		static Panel* newFilter(const POINT &pos, ImageProcessor *processor);
+		static Panel* newFilter(const POINT &pos, ImageProcessor *processor)
+		{
+			return new lycee::Panel(
+				TEXT("FILTER"),
+				processor,
+				pos,
+				SIZE{ lycee::PanelProfile::PANEL_WIDTH, lycee::PanelProfile::PANEL_HEIGHT },
+				true,
+				true
+			);
+		}
 
-		static Panel* newInput(const POINT &pos, ImageProcessor *inputProcessor);
+		static Panel* newInput(const POINT &pos, ImageProcessor *inputProcessor)
+		{
+			return new lycee::Panel(
+				TEXT("INPUT"),
+				inputProcessor,
+				pos,
+				SIZE{ lycee::PanelProfile::PANEL_WIDTH, lycee::PanelProfile::PANEL_HEIGHT },
+				false,
+				true
+			);
+		}
 
-		static Panel* newOutput(const POINT &pos, ImageProcessor *outputProcessor);
+		static Panel* newOutput(const POINT &pos, ImageProcessor *outputProcessor)
+		{
+			return new lycee::Panel(
+				TEXT("OUTPUT"),
+				outputProcessor,
+				pos,
+				SIZE{ lycee::PanelProfile::PANEL_WIDTH, lycee::PanelProfile::PANEL_HEIGHT },
+				true,
+				false
+			);
+		}
 
 	};
+
+
+
 
 }	// lycee
 #endif	// __LYCEE__PANELS__HEADER__
