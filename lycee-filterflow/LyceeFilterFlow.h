@@ -34,6 +34,11 @@ namespace lycee {
 		lycee::Panel *filter3;
 		lycee::Panel *filter4;
 
+		typedef std::pair<lycee::Panel*, lycee::Panel*> JointFlow;
+		std::list<JointFlow> jointList;
+
+
+		BOOL renderEdge(lycee::WindowPainter *painter);
 	};
 
 }	// lycee
