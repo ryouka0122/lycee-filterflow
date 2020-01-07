@@ -84,7 +84,7 @@ namespace lycee {
 			const bool output
 		);
 
-		virtual HITTEST_TYPE hittest(int x, int y);
+		virtual HITTEST_TYPE hittest(long x, long y);
 
 		virtual BOOL render(WindowPainter *painter);
 
@@ -109,6 +109,24 @@ namespace lycee {
 		};
 
 		bool getJointPt(JointType type, LPPOINT lpJointPt) const;
+
+		POINT getPosition() const {
+			return ptPanel;
+		}
+
+		SIZE getSize() const {
+			return szPanel;
+		}
+
+		void move(long dx, long dy) {
+			moveTo(this->ptPanel.x + dx, this->ptPanel.y + dy);
+		}
+
+		void moveTo(long newX, long newY) {
+			ptPanel.x = newX;
+			ptPanel.y = newY;
+			calcRenderRect();
+		}
 
 	private:
 		lycee_string strType;

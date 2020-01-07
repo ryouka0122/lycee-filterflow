@@ -25,18 +25,26 @@ namespace lycee {
 		
 		virtual LRESULT doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
 
+		virtual LRESULT doLButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+		virtual LRESULT doMouseMove(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+		virtual LRESULT doLButtonUp(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+
+
 	private:
 		lycee::Panel *input;
 		lycee::Panel *output;
 
-		lycee::Panel *filter1;
-		lycee::Panel *filter2;
-		lycee::Panel *filter3;
-		lycee::Panel *filter4;
+		std::deque<lycee::Panel*> filterList;
+
+		bool isDragging;
+		POINT ptStartMouse;
+		POINT ptStartPanel;
+		lycee::Panel *dragging;
+
+
 
 		typedef std::pair<lycee::Panel*, lycee::Panel*> JointFlow;
 		std::list<JointFlow> jointList;
-
 
 		BOOL renderEdge(lycee::WindowPainter *painter);
 	};
