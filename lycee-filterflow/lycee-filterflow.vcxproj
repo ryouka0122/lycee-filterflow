@@ -128,6 +128,7 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageProcessor.cpp" />
     <ClCompile Include="LyceeFilterFlow.cpp" />
+    <ClCompile Include="LyceeFilterFlow_Event.cpp" />
     <ClCompile Include="MainEventController.cpp" />
     <ClCompile Include="Panels.cpp" />
     <ClCompile Include="Program.cpp" />

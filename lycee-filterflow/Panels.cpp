@@ -67,8 +67,11 @@ void lycee::Panel::calcRenderRect()
 	};
 }
 
-lycee::Panel::HITTEST_TYPE lycee::Panel::hittest(int x, int y)
+lycee::Panel::HITTEST_TYPE lycee::Panel::hittest(long x, long y)
 {
+	if (PtInRect(&rcPanel, POINT{ x, y })) {
+		return HITTEST_TYPE::BODY;
+	}
 	return lycee::Panel::HITTEST_TYPE::NONE;
 }
 
