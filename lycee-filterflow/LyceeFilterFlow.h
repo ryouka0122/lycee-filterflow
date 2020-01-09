@@ -5,6 +5,8 @@
 
 #include "Application.h"
 #include "Panels.h"
+#include "Dialog.h"
+
 
 namespace lycee {
 
@@ -41,12 +43,17 @@ namespace lycee {
 		POINT ptStartPanel;
 		lycee::Panel *dragging;
 
-
-
 		typedef std::pair<lycee::Panel*, lycee::Panel*> JointFlow;
 		std::list<JointFlow> jointList;
 
 		BOOL renderEdge(lycee::WindowPainter *painter);
+
+	private:
+		lycee::FileSelectDialog fileSelectDialog;
+
+		void openDialog();
+		void saveDialog();
+
 	};
 
 }	// lycee
