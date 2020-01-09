@@ -52,6 +52,14 @@ LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM
 	jointList.push_back(std::make_pair(input, filterList[2]));
 	jointList.push_back(std::make_pair(filterList[2], output));
 
+	fileSelectDialog
+		.title(TEXT("ファイルを選んで"))
+		.filter(TEXT("txt"), TEXT("Text File"))
+		.filter(TEXT("bmp"), TEXT("Bitmap File"))
+		.filter(TEXT("png"), TEXT("PNG File"))
+		.filter(TEXT("jpg"), TEXT("JPEG File"))
+		.filter(TEXT("gif"), TEXT("GIF Image"))
+		.filter(TEXT("*"), TEXT("All Files"));
 	return 0L;
 }
 
@@ -69,6 +77,21 @@ LRESULT lycee::LyceeFilterFlow::doPaint(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM 
 	return 0L;
 }
 
+void lycee::LyceeFilterFlow::openDialog()
+{
+	auto result = fileSelectDialog.showLoadDialog(getHWND());
+	if (result) {
+		MessageBox(getHWND(), result.value().c_str(), TEXT("RESULT"), MB_OK);
+	}
+}
+
+void lycee::LyceeFilterFlow::saveDialog()
+{
+	if (auto result = fileSelectDialog.showSaveDialog(getHWND())) {
+		MessageBox(getHWND(), result.value().c_str(), TEXT("RESULT"), MB_OK);
+	}
+}
+
 LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
 	lycee_string msg;
@@ -78,10 +101,18 @@ LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		msg = TEXT("[File]>[NEW]");
 		break;
 	case ID_FILE_OPEN:
-		msg = TEXT("[File]>[OPEN]");
+		openDialog();
+		break;
+	case ID_FILE_SAVE:
+		msg = TEXT("[File]>[SAVE]");
+		break;
+	case ID_FILE_SAVE_AS:
+		saveDialog();
 		break;
 	case ID_FILE_QUIT:
-		msg = TEXT("[File]>[QUIT]");
+		if (IDOK == MessageBox(hWnd, TEXT("終了しますか？"), TEXT("確認"), MB_ICONQUESTION | MB_OKCANCEL)) {
+			DestroyWindow(hWnd);
+		}
 		break;
 	}
 
