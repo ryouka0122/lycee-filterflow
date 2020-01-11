@@ -135,6 +135,7 @@
     <ClCompile Include="Panels.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Stationary.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WindowPainter.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +149,7 @@
     <ClInclude Include="Panels.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stationary.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="WindowPainter.h" />
   </ItemGroup>
   <ItemGroup>
