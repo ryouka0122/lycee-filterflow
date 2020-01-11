@@ -81,7 +81,7 @@ void lycee::LyceeFilterFlow::openDialog()
 {
 	auto result = fileSelectDialog.showLoadDialog(getHWND());
 	if (result) {
-		MessageBox(getHWND(), result.value().c_str(), TEXT("RESULT"), MB_OK);
+		lycee::MessageDialog::info(getHWND(), result.value());
 	}
 }
 
@@ -110,7 +110,8 @@ LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		saveDialog();
 		break;
 	case ID_FILE_QUIT:
-		if (IDOK == MessageBox(hWnd, TEXT("終了しますか？"), TEXT("確認"), MB_ICONQUESTION | MB_OKCANCEL)) {
+		if(IDOK == lycee::MessageDialog::confirm(hWnd, TEXT("終了しますか？"))) {
+//		if (IDOK == MessageBox(hWnd, TEXT("終了しますか？"), TEXT("確認"), MB_ICONQUESTION | MB_OKCANCEL)) {
 			DestroyWindow(hWnd);
 		}
 		break;

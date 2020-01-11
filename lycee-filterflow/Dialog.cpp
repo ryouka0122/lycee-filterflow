@@ -1,5 +1,10 @@
 #include "Dialog.h"
 
+#include "Utils.h"
+
+// ============================================================================
+// FileSelectDialog
+// ============================================================================
 lycee::FileSelectDialog::~FileSelectDialog()
 {
 }
@@ -128,3 +133,174 @@ LPTSTR lycee::FileSelectDialog::buildFilter()
 	return lpFilter;
 }
 
+
+// ============================================================================
+// MessageDialog
+// ============================================================================
+
+lycee::MessageDialog::~MessageDialog()
+{
+	;
+}
+
+lycee::MessageDialog::MessageDialog()
+	: strTitle(TEXT("lycee::MessageDialog")),
+	strMsg(TEXT("Message")),
+	buttonType(lycee::MessageDialog::ButtonType::Ok),
+	iconType(lycee::MessageDialog::IconType::NoUse)
+{
+	;
+}
+
+lycee::MessageDialog& lycee::MessageDialog::title(const lycee_string &str)
+{
+	strTitle = str;
+	return *this;
+}
+
+lycee::MessageDialog& lycee::MessageDialog::message(lycee_string fmt, ...)
+{
+	std::va_list args;
+	va_start(args, fmt);
+	auto text = lycee::Strings::format(fmt, args);
+
+	if (text) {
+		this->strMsg = text.value();
+	}
+	va_end(args);
+	return *this;
+}
+
+lycee::MessageDialog& lycee::MessageDialog::button(ButtonType type)
+{
+	buttonType = type;
+	return *this;
+}
+
+lycee::MessageDialog& lycee::MessageDialog::icon(IconType type)
+{
+	iconType = type;
+	return *this;
+}
+
+int lycee::MessageDialog::show(HWND hParentWnd)
+{
+	return MessageBox(
+		hParentWnd,
+		strMsg.c_str(),
+		strTitle.c_str(),
+		buttonType | iconType
+	);
+}
+
+int lycee::MessageDialog::info(HWND hWnd, lycee_string fmt, ...)
+{
+	std::va_list args;
+	va_start(args, fmt);
+	auto message = lycee::Strings::format(fmt, args);
+	va_end(args);
+
+	return lycee::MessageDialog()
+		.title(TEXT("Information"))
+		.message(message.value())
+		.button(ButtonType::Ok)
+		.icon(IconType::Information)
+		.show(hWnd);
+}
+
+int lycee::MessageDialog::error(HWND hWnd, lycee_string fmt, ...)
+{
+	std::va_list args;
+	va_start(args, fmt);
+	auto message = lycee::Strings::format(fmt, args);
+	va_end(args);
+
+	return lycee::MessageDialog()
+		.title(TEXT("Error!!"))
+		.message(message.value())
+		.button(ButtonType::Ok)
+		.icon(IconType::Stop)
+		.show(hWnd);
+}
+
+int lycee::MessageDialog::confirm(HWND hWnd, lycee_string fmt, ...)
+{
+	std::va_list args;
+	va_start(args, fmt);
+	auto message = lycee::Strings::format(fmt, args);
+	va_end(args);
+
+	return lycee::MessageDialog()
+		.title(TEXT("Confirmation"))
+		.message(message.value())
+		.button(ButtonType::OkCancel)
+		.icon(IconType::Question)
+		.show(hWnd);
+}
+
+int lycee::MessageDialog::warning(HWND hWnd, lycee_string fmt, ...)
+{
+	std::va_list args;
+	va_start(args, fmt);
+	auto message = lycee::Strings::format(fmt, args);
+	va_end(args);
+
+	return lycee::MessageDialog()
+		.title(TEXT("Warning!!"))
+		.message(message.value())
+		.button(ButtonType::Ok)
+		.icon(IconType::Exclamation)
+		.show(hWnd);
+}
+
+int lycee::MessageDialog::retry(HWND hWnd, lycee_string fmt, ...)
+{
+	std::va_list args;
+	va_start(args, fmt);
+	auto message = lycee::Strings::format(fmt, args);
+	va_end(args);
+
+	return lycee::MessageDialog()
+		.title(TEXT("Retry or Cancel?"))
+		.message(message.value())
+		.button(ButtonType::RetryCancel)
+		.icon(IconType::Question)
+		.show(hWnd);
+}
+
+
+// ============================================================================
+// ColorPicker
+// ============================================================================
+
+lycee::ColorPicker::~ColorPicker()
+{
+	delete[] cc.lpCustColors;
+}
+
+lycee::ColorPicker::ColorPicker()
+	: cc({ 0 })
+{
+	cc.lStructSize = sizeof(cc);
+	cc.lpCustColors = new COLORREF[16];
+	cc.Flags = CC_RGBINIT | CC_FULLOPEN;
+	cc.rgbResult = 0;
+}
+
+lycee::ColorPicker& lycee::ColorPicker::initColor(COLORREF color)
+{
+	this->cc.rgbResult = color;
+	return *this;
+}
+
+std::optional<COLORREF> lycee::ColorPicker::show(HWND hParentWnd)
+{
+	cc.hwndOwner = hParentWnd;
+
+	std::optional<COLORREF> result;
+
+	if (ChooseColor(&cc)) {
+		result = cc.rgbResult;
+	}
+	return result;
+}
