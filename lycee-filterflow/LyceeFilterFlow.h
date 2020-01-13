@@ -1,16 +1,14 @@
 #ifndef __LYCEE_FILTERFLOW__HEADER__
 #define __LYCEE_FILTERFLOW__HEADER__
 
-#include "includes.h"
+#include "lycee.h"
 
-#include "Application.h"
-#include "Panels.h"
-#include "Dialog.h"
+#include "filtergraph.h"
 
 
 namespace lycee {
 
-	class LyceeFilterFlow : virtual public Application {
+	class LyceeFilterFlow : virtual public widgets::Application {
 	public:
 		virtual ~LyceeFilterFlow();
 		explicit LyceeFilterFlow(HINSTANCE hInstance);
@@ -46,10 +44,10 @@ namespace lycee {
 		typedef std::pair<lycee::Panel*, lycee::Panel*> JointFlow;
 		std::list<JointFlow> jointList;
 
-		BOOL renderEdge(lycee::WindowPainter *painter);
+		BOOL renderEdge(lycee::gdis::WindowPainter *painter);
 
 	private:
-		lycee::FileSelectDialog fileSelectDialog;
+		lycee::widgets::FileSelectDialog fileSelectDialog;
 
 		void openDialog();
 		void saveDialog();

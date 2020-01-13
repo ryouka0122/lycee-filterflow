@@ -1,13 +1,13 @@
 #include "Application.h"
 
 
-std::map<HWND, lycee::Application*> lycee::Application::applicationList;
+std::map<HWND, lycee::widgets::Application*> lycee::widgets::Application::applicationList;
 
-LRESULT CALLBACK lycee::Application::MainEventController(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT CALLBACK lycee::widgets::Application::MainEventController(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
 	if (uMsg == WM_CREATE) {
 		LPCREATESTRUCT lpcs = (LPCREATESTRUCT)lp;
-		lycee::Application *targetApplication = (lycee::Application*)lpcs->lpCreateParams;
+		lycee::widgets::Application *targetApplication = (lycee::widgets::Application*)lpcs->lpCreateParams;
 		applicationList.emplace(hWnd, targetApplication);
 		return targetApplication->dispatchEvent(hWnd, uMsg, wp, lp);
 	}
@@ -17,7 +17,7 @@ LRESULT CALLBACK lycee::Application::MainEventController(HWND hWnd, UINT uMsg, W
 		return DefWindowProc(hWnd, uMsg, wp, lp);
 	}
 
-	lycee::Application *app = iter->second;
+	lycee::widgets::Application *app = iter->second;
 	LRESULT lRes = app->dispatchEvent(hWnd, uMsg, wp, lp);
 
 	if (uMsg == WM_DESTROY) {

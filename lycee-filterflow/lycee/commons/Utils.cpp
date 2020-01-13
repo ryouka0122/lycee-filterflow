@@ -1,8 +1,7 @@
 #include "Utils.h"
 
 
-
-std::optional<std::string> lycee::Strings::_format(std::string fmt, std::va_list args)
+std::optional<std::string> lycee::commons::Strings::_format(std::string fmt, std::va_list args)
 {
 	std::optional<std::string> result;
 
@@ -18,7 +17,7 @@ std::optional<std::string> lycee::Strings::_format(std::string fmt, std::va_list
 	return result;
 }
 
-std::optional<std::wstring> lycee::Strings::_wformat(std::wstring fmt, std::va_list args)
+std::optional<std::wstring> lycee::commons::Strings::_wformat(std::wstring fmt, std::va_list args)
 {
 	std::optional<std::wstring> result;
 	int len = _vscwprintf(fmt.c_str(), args) + 1;

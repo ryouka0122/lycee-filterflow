@@ -1,8 +1,6 @@
 #include "LyceeFilterFlow.h"
 
 #include "resource.h"
-#include "ImageProcessor.h"
-#include "WindowPainter.h"
 
 
 LRESULT lycee::LyceeFilterFlow::dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
@@ -38,14 +36,14 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 
 LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
-	input = lycee::Panel::newInput(POINT{ 100, 100 }, lycee::ImageProcessor::getDefault());
-	output = lycee::Panel::newOutput(POINT{ 550, 300 }, lycee::ImageProcessor::getDefault());
+	input = lycee::Panel::newInput(POINT{ 100, 100 }, lycee::images::ImageProcessor::getDefault());
+	output = lycee::Panel::newOutput(POINT{ 550, 300 }, lycee::images::ImageProcessor::getDefault());
 	filterList.push_back(
-		lycee::Panel::newFilter(POINT{ 350, 100 }, lycee::ImageProcessor::getDefault()));
+		lycee::Panel::newFilter(POINT{ 350, 100 }, lycee::images::ImageProcessor::getDefault()));
 	filterList.push_back(
-		lycee::Panel::newFilter(POINT{ 700, 100 }, lycee::ImageProcessor::getDefault()));
+		lycee::Panel::newFilter(POINT{ 700, 100 }, lycee::images::ImageProcessor::getDefault()));
 	filterList.push_back(
-		lycee::Panel::newFilter(POINT{ 300, 300 }, lycee::ImageProcessor::getDefault()));
+		lycee::Panel::newFilter(POINT{ 300, 300 }, lycee::images::ImageProcessor::getDefault()));
 
 	jointList.push_back(std::make_pair(input, filterList[0]));
 	jointList.push_back(std::make_pair(filterList[0], filterList[1]));
@@ -65,7 +63,7 @@ LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM
 
 LRESULT lycee::LyceeFilterFlow::doPaint(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
-	lycee::WindowPainter painter(hWnd);
+	lycee::gdis::WindowPainter painter(hWnd);
 
 	input->render(&painter);
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
@@ -81,7 +79,7 @@ void lycee::LyceeFilterFlow::openDialog()
 {
 	auto result = fileSelectDialog.showLoadDialog(getHWND());
 	if (result) {
-		lycee::MessageDialog::info(getHWND(), result.value());
+		lycee::widgets::MessageDialog::info(getHWND(), result.value());
 	}
 }
 
@@ -110,8 +108,7 @@ LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		saveDialog();
 		break;
 	case ID_FILE_QUIT:
-		if(IDOK == lycee::MessageDialog::confirm(hWnd, TEXT("終了しますか？"))) {
-//		if (IDOK == MessageBox(hWnd, TEXT("終了しますか？"), TEXT("確認"), MB_ICONQUESTION | MB_OKCANCEL)) {
+		if(IDOK == lycee::widgets::MessageDialog::confirm(hWnd, TEXT("終了しますか？"))) {
 			DestroyWindow(hWnd);
 		}
 		break;

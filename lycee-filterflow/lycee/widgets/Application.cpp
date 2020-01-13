@@ -1,13 +1,12 @@
 #include "Application.h"
 
-#include "resource.h"
 
-lycee::Application::~Application()
+lycee::widgets::Application::~Application()
 {
 	;
 }
 
-lycee::Application::Application(HINSTANCE hInstance)
+lycee::widgets::Application::Application(HINSTANCE hInstance)
 	: atom(INVALID_ATOM),
 	hInstance(hInstance),
 	hWnd(NULL)
@@ -15,7 +14,7 @@ lycee::Application::Application(HINSTANCE hInstance)
 	;
 }
 
-BOOL lycee::Application::initialize()
+BOOL lycee::widgets::Application::initialize(LPCTSTR lpszClassName, LPCTSTR lpszMenuName, UINT style)
 {
 	if (INVALID_ATOM != this->atom) {
 		return FALSE;
@@ -34,9 +33,9 @@ BOOL lycee::Application::initialize()
 	wcex.hInstance = hInstance;
 
 	wcex.lpfnWndProc = MainEventController;
-	wcex.lpszClassName = TEXT("LYCEE-FILTERFLOW");
-	wcex.lpszMenuName = MAKEINTRESOURCE(ID_MAINMENU1);
-	wcex.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;
+	wcex.lpszClassName = lpszClassName;
+	wcex.lpszMenuName = lpszMenuName;
+	wcex.style = style;
 
 	this->atom = RegisterClassEx(&wcex);
 
@@ -44,7 +43,7 @@ BOOL lycee::Application::initialize()
 
 }
 
-BOOL lycee::Application::run(const lycee_string &title, int width, int height, int nCmdShow)
+BOOL lycee::widgets::Application::run(const lycee_string &title, int width, int height, int nCmdShow)
 {
 	if (IsWindow(this->hWnd)) {
 		return FALSE;
@@ -79,7 +78,7 @@ BOOL lycee::Application::run(const lycee_string &title, int width, int height, i
 	return TRUE;
 }
 
-void lycee::Application::release()
+void lycee::widgets::Application::release()
 {
 	if (INVALID_ATOM == this->atom) {
 		return;
@@ -89,7 +88,7 @@ void lycee::Application::release()
 }
 
 
-RECT lycee::Application::adjustWindowRect(int width, int height, DWORD dwStyle, BOOL bMenu)
+RECT lycee::widgets::Application::adjustWindowRect(int width, int height, DWORD dwStyle, BOOL bMenu)
 {
 	RECT rcDesktop;
 	if (width == 0 || height == 0 || !GetWindowRect(GetDesktopWindow(), &rcDesktop)) {

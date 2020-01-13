@@ -2,18 +2,13 @@
 
 #include "resource.h"
 
-#include "Panels.h"
-#include "ImageProcessor.h"
-#include "WindowPainter.h"
-#include "Stationary.h"
-
 
 lycee::LyceeFilterFlow::~LyceeFilterFlow()
 {
 }
 
 lycee::LyceeFilterFlow::LyceeFilterFlow(HINSTANCE hInstance)
-	: lycee::Application(hInstance),
+	: lycee::widgets::Application(hInstance),
 	input(NULL),
 	output(NULL),
 	filterList()
@@ -22,18 +17,23 @@ lycee::LyceeFilterFlow::LyceeFilterFlow(HINSTANCE hInstance)
 
 BOOL lycee::LyceeFilterFlow::start(const lycee_string &title, int width, int height, int nCmdShow)
 {
-	if (!this->initialize()) {
+	if (!this->initialize(
+			TEXT("LYCEE-FILTERFLOW"),
+			MAKEINTRESOURCE(ID_MAINMENU1),
+			CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS
+		)
+	) {
 		return FALSE;
 	}
 	return this->run(title, width, height, nCmdShow);
 }
 
-BOOL lycee::LyceeFilterFlow::renderEdge(lycee::WindowPainter *painter)
+BOOL lycee::LyceeFilterFlow::renderEdge(lycee::gdis::WindowPainter *painter)
 {
-	lycee::Pen edge(lycee::PanelProfile::LINE_BASECOLOR, 1);
-	lycee::Pen line(lycee::PanelProfile::LINE_BASECOLOR, 1);
-	lycee::SolidBrush faceBegin(lycee::PanelProfile::LINE_BEGIN_FACECOLOR);
-	lycee::SolidBrush faceEnd(lycee::PanelProfile::LINE_END_FACECOLOR);
+	lycee::gdis::Pen edge(lycee::PanelProfile::LINE_BASECOLOR, 1);
+	lycee::gdis::Pen line(lycee::PanelProfile::LINE_BASECOLOR, 1);
+	lycee::gdis::SolidBrush faceBegin(lycee::PanelProfile::LINE_BEGIN_FACECOLOR);
+	lycee::gdis::SolidBrush faceEnd(lycee::PanelProfile::LINE_END_FACECOLOR);
 
 	for (auto iter = jointList.begin(); iter != jointList.end(); iter++) {
 		POINT ptBegin, ptEnd;

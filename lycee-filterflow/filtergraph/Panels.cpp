@@ -1,10 +1,5 @@
 #include "Panels.h"
 
-#include "Image.h"
-#include "ImageProcessor.h"
-#include "Stationary.h"
-#include "WindowPainter.h"
-
 // ============================================================================================
 // Panel
 // ============================================================================================
@@ -14,7 +9,7 @@ lycee::Panel::~Panel()
 
 lycee::Panel::Panel(
 	const lycee_string &type,
-	ImageProcessor *target,
+	lycee::images::ImageProcessor *target,
 	const POINT &pos,
 	const SIZE &size,
 	const bool input,
@@ -75,39 +70,39 @@ lycee::Panel::HITTEST_TYPE lycee::Panel::hittest(long x, long y)
 	return lycee::Panel::HITTEST_TYPE::NONE;
 }
 
-BOOL lycee::Panel::render(WindowPainter *painter)
+BOOL lycee::Panel::render(lycee::gdis::WindowPainter *painter)
 {
 	this->renderJoint(painter);
 	this->renderPanel(painter);
 	return TRUE;
 }
 
-lycee::Image lycee::Panel::process(const lycee::Image &srcimg)
+lycee::images::Image lycee::Panel::process(const lycee::images::Image &srcimg)
 {
-	return this->processor->run(srcimg);
+	return this->processor->invoke(srcimg);
 }
 
-void lycee::Panel::renderJoint(WindowPainter * painter)
+void lycee::Panel::renderJoint(lycee::gdis::WindowPainter * painter)
 {
 	// -------------------------------------------------------------
 	// render joint
 	for (int i = 0; i < JointType::JOINT_MAX; i++) {
 		if (this->accept[i]) {
 			painter->rectangle(
-				lycee::SolidBrush(PanelProfile::JOINT_COLOR_FACE),
-				lycee::Pen(PanelProfile::JOINT_COLOR_EDGE),
+				lycee::gdis::SolidBrush(PanelProfile::JOINT_COLOR_FACE),
+				lycee::gdis::Pen(PanelProfile::JOINT_COLOR_EDGE),
 				rcJoint[i]
 			);
 		}
 	}
 }
 
-void lycee::Panel::renderPanel(WindowPainter * painter)
+void lycee::Panel::renderPanel(lycee::gdis::WindowPainter * painter)
 {
-	lycee::Pen edgePen(PanelProfile::TEXT_COLOR, 1);
-	lycee::SolidBrush faceBrush(PanelProfile::BACKGROUND_COLOR);
-	lycee::Pencil textPencil(PanelProfile::TEXT_COLOR);
-	lycee::Font textFont;
+	lycee::gdis::Pen edgePen(PanelProfile::TEXT_COLOR, 1);
+	lycee::gdis::SolidBrush faceBrush(PanelProfile::BACKGROUND_COLOR);
+	lycee::gdis::Pencil textPencil(PanelProfile::TEXT_COLOR);
+	lycee::gdis::Font textFont;
 
 	// -------------------------------------------------------------
 	// render title

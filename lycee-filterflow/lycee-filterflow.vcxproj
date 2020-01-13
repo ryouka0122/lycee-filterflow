@@ -124,36 +124,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Dialog.cpp" />
-    <ClCompile Include="FilterGraph.cpp" />
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="ImageProcessor.cpp" />
+    <ResourceCompile Include="lycee-filterflow.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="filtergraph.h" />
+    <ClInclude Include="filtergraph\FilterGraph.h" />
+    <ClInclude Include="filtergraph\Panels.h" />
+    <ClInclude Include="lycee.h" />
+    <ClInclude Include="LyceeFilterFlow.h" />
+    <ClInclude Include="lycee\commons.h" />
+    <ClInclude Include="lycee\commons\Utils.h" />
+    <ClInclude Include="lycee\gdis.h" />
+    <ClInclude Include="lycee\gdis\Stationary.h" />
+    <ClInclude Include="lycee\gdis\WindowPainter.h" />
+    <ClInclude Include="lycee\images.h" />
+    <ClInclude Include="lycee\images\Image.h" />
+    <ClInclude Include="lycee\images\ImageProcessor.h" />
+    <ClInclude Include="lycee\includes.h" />
+    <ClInclude Include="lycee\widgets.h" />
+    <ClInclude Include="lycee\widgets\Application.h" />
+    <ClInclude Include="lycee\widgets\Dialog.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="filtergraph\FilterGraph.cpp" />
+    <ClCompile Include="filtergraph\Panels.cpp" />
     <ClCompile Include="LyceeFilterFlow.cpp" />
     <ClCompile Include="LyceeFilterFlow_Event.cpp" />
-    <ClCompile Include="MainEventController.cpp" />
-    <ClCompile Include="Panels.cpp" />
+    <ClCompile Include="lycee\commons\Utils.cpp" />
+    <ClCompile Include="lycee\gdis\Stationary.cpp" />
+    <ClCompile Include="lycee\gdis\WindowPainter.cpp" />
+    <ClCompile Include="lycee\images\Image.cpp" />
+    <ClCompile Include="lycee\images\ImageProcessor.cpp" />
+    <ClCompile Include="lycee\widgets\Application.cpp" />
+    <ClCompile Include="lycee\widgets\Dialog.cpp" />
+    <ClCompile Include="lycee\widgets\MainEventController.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="Stationary.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="WindowPainter.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Dialog.h" />
-    <ClInclude Include="FilterGraph.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="ImageProcessor.h" />
-    <ClInclude Include="includes.h" />
-    <ClInclude Include="LyceeFilterFlow.h" />
-    <ClInclude Include="Panels.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="Stationary.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="WindowPainter.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="lycee-filterflow.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
