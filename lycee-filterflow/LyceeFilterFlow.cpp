@@ -30,23 +30,23 @@ BOOL lycee::LyceeFilterFlow::start(const lycee_string &title, int width, int hei
 
 BOOL lycee::LyceeFilterFlow::renderEdge(lycee::gdis::WindowPainter *painter)
 {
-	lycee::gdis::Pen edge(lycee::PanelProfile::LINE_BASECOLOR, 1);
-	lycee::gdis::Pen line(lycee::PanelProfile::LINE_BASECOLOR, 1);
-	lycee::gdis::SolidBrush faceBegin(lycee::PanelProfile::LINE_BEGIN_FACECOLOR);
-	lycee::gdis::SolidBrush faceEnd(lycee::PanelProfile::LINE_END_FACECOLOR);
+	lycee::gdis::Pen edge(lycee::filtergraph::PanelProfile::LINE_BASECOLOR, 1);
+	lycee::gdis::Pen line(lycee::filtergraph::PanelProfile::LINE_BASECOLOR, 1);
+	lycee::gdis::SolidBrush faceBegin(lycee::filtergraph::PanelProfile::LINE_BEGIN_FACECOLOR);
+	lycee::gdis::SolidBrush faceEnd(lycee::filtergraph::PanelProfile::LINE_END_FACECOLOR);
 
 	for (auto iter = jointList.begin(); iter != jointList.end(); iter++) {
-		POINT ptBegin, ptEnd;
-		bool drawable = 
-			iter->first->getJointPt(Panel::JointType::OUTPUT, &ptBegin)
-				&& iter->second->getJointPt(Panel::JointType::INPUT, &ptEnd);
-		if (!drawable) continue;
+		std::optional<POINT> ptBegin = iter->first->getJointPt(filtergraph::JointType::OUTPUT);
+		std::optional<POINT >ptEnd = iter->second->getJointPt(filtergraph::JointType::INPUT);
+		if (!ptBegin || !ptEnd) continue;
+
+		POINT begin = ptBegin.value(), end = ptEnd.value();
 
 		POINT ptList[4] = {
-			ptBegin,
-			POINT{ ptEnd.x, ptBegin.y },
-			POINT{ ptBegin.x, ptEnd.y },
-			ptEnd
+			begin,
+			POINT{ end.x, begin.y },
+			POINT{ begin.x, end.y },
+			end
 		};
 		painter->curve(line , 4, ptList);
 
@@ -54,8 +54,8 @@ BOOL lycee::LyceeFilterFlow::renderEdge(lycee::gdis::WindowPainter *painter)
 			return RECT{ pt.x - r, pt.y - r, pt.x + r, pt.y + r };
 		};
 
-		painter->ellipse(faceBegin, edge, circleRect(ptBegin, PanelProfile::LINE_JOINT_RADIUS));
-		painter->ellipse(faceEnd, edge, circleRect(ptEnd, PanelProfile::LINE_JOINT_RADIUS));
+		painter->ellipse(faceBegin, edge, circleRect(begin, lycee::filtergraph::PanelProfile::LINE_JOINT_RADIUS));
+		painter->ellipse(faceEnd, edge, circleRect(end, lycee::filtergraph::PanelProfile::LINE_JOINT_RADIUS));
 	}
 
 	return TRUE;

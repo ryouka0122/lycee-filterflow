@@ -4,6 +4,7 @@
 #include "filtergraph\FilterGraph.h"
 
 #include "filtergraph\Panels.h"
+#include "filtergraph\PanelViewFactory.h"
 
 
 #endif	// __LYCEE__FILTER_GRAPH__HEADER__

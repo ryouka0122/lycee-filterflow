@@ -31,19 +31,29 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		delete *iter;
 	}
 	delete output;
+
+	for (auto iter = factories.begin(); iter != factories.end(); iter++) {
+		delete *iter;
+	}
+	factories.clear();
 	return 0L;
 }
 
 LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
-	input = lycee::Panel::newInput(POINT{ 100, 100 }, lycee::images::ImageProcessor::getDefault());
-	output = lycee::Panel::newOutput(POINT{ 550, 300 }, lycee::images::ImageProcessor::getDefault());
+	
+	factories.push_back(new lycee::filtergraph::InputPanelViewFactory());
+	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory());
+	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory());
+
+	input = factories[0]->create(POINT{ 100, 100 }, lycee::images::ImageProcessor::getDefault());
+	output = factories[1]->create(POINT{ 550, 300 }, lycee::images::ImageProcessor::getDefault());
 	filterList.push_back(
-		lycee::Panel::newFilter(POINT{ 350, 100 }, lycee::images::ImageProcessor::getDefault()));
+		factories[2]->create(POINT{ 350, 100 }, lycee::images::ImageProcessor::getDefault()));
 	filterList.push_back(
-		lycee::Panel::newFilter(POINT{ 700, 100 }, lycee::images::ImageProcessor::getDefault()));
+		factories[2]->create(POINT{ 700, 100 }, lycee::images::ImageProcessor::getDefault()));
 	filterList.push_back(
-		lycee::Panel::newFilter(POINT{ 300, 300 }, lycee::images::ImageProcessor::getDefault()));
+		factories[2]->create(POINT{ 300, 300 }, lycee::images::ImageProcessor::getDefault()));
 
 	jointList.push_back(std::make_pair(input, filterList[0]));
 	jointList.push_back(std::make_pair(filterList[0], filterList[1]));
