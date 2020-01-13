@@ -2,14 +2,6 @@
 
 #include "LyceeFilterFlow.h"
 
-#include "Application.h"
-#include "Panels.h"
-#include "Image.h"
-#include "ImageProcessor.h"
-#include "WindowPainter.h"
-
-#include "Stationary.h"
-
 
 int WINAPI WinMain(
 	HINSTANCE hInstance,

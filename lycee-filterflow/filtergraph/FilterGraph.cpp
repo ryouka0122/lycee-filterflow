@@ -1,6 +1,5 @@
 #include "FilterGraph.h"
 
-#include "WindowPainter.h"
 #include "Panels.h"
 
 
@@ -27,7 +26,7 @@ void lycee::FilterGraph::joinPanel(panel_size_type begin, panel_size_type end)
 
 void lycee::FilterGraph::render(HDC hdc)
 {
-	lycee::WindowPainter painter(hdc);
+	lycee::gdis::WindowPainter painter(hdc);
 
 	for (auto iter = this->panelList.begin(); iter != this->panelList.end(); iter++) {
 		renderPanel(&painter, *iter);
@@ -39,12 +38,12 @@ void lycee::FilterGraph::render(HDC hdc)
 
 }
 
-void lycee::FilterGraph::renderPanel(WindowPainter* painter, Panel *panel)
+void lycee::FilterGraph::renderPanel(lycee::gdis::WindowPainter* painter, Panel *panel)
 {
 
 }
 
-void lycee::FilterGraph::renderEdge(WindowPainter* painter, Edge *edge)
+void lycee::FilterGraph::renderEdge(lycee::gdis::WindowPainter* painter, Edge *edge)
 {
 	;
 }

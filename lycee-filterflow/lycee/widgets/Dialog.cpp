@@ -1,15 +1,23 @@
 #include "Dialog.h"
 
-#include "Utils.h"
+#include "..\commons.h"
+
+
+#define STRING_FORMAT(result, f) \
+	std::va_list _args; \
+	va_start(_args, f); \
+	auto result = lycee::commons::Strings::format(f, _args); \
+	va_end(_args);
+
 
 // ============================================================================
 // FileSelectDialog
 // ============================================================================
-lycee::FileSelectDialog::~FileSelectDialog()
+lycee::widgets::FileSelectDialog::~FileSelectDialog()
 {
 }
 
-lycee::FileSelectDialog::FileSelectDialog()
+lycee::widgets::FileSelectDialog::FileSelectDialog()
 	: strTitle(TEXT("ファイル選択ダイアログ")),
 	filterList(),
 	strBaseDir()
@@ -17,13 +25,13 @@ lycee::FileSelectDialog::FileSelectDialog()
 	;
 }
 
-lycee::FileSelectDialog& lycee::FileSelectDialog::title(const lycee_string &_title)
+lycee::widgets::FileSelectDialog& lycee::widgets::FileSelectDialog::title(const lycee_string &_title)
 {
 	this->strTitle = _title;
 	return *this;
 }
 
-lycee::FileSelectDialog& lycee::FileSelectDialog::filter(const lycee_string &_ext, const lycee_string &_name)
+lycee::widgets::FileSelectDialog& lycee::widgets::FileSelectDialog::filter(const lycee_string &_ext, const lycee_string &_name)
 {
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
 		if (iter->first == _ext) {
@@ -35,23 +43,23 @@ lycee::FileSelectDialog& lycee::FileSelectDialog::filter(const lycee_string &_ex
 	return *this;
 }
 
-lycee::FileSelectDialog& lycee::FileSelectDialog::basedir(const lycee_string &_basedir)
+lycee::widgets::FileSelectDialog& lycee::widgets::FileSelectDialog::basedir(const lycee_string &_basedir)
 {
 	this->strBaseDir = _basedir;
 	return *this;
 }
 
-std::optional<lycee_string> lycee::FileSelectDialog::showSaveDialog(HWND hParentWnd)
+std::optional<lycee_string> lycee::widgets::FileSelectDialog::showSaveDialog(HWND hParentWnd)
 {
 	return _show(hParentWnd, OFN_OVERWRITEPROMPT, GetSaveFileName);
 }
 
-std::optional<lycee_string> lycee::FileSelectDialog::showLoadDialog(HWND hParentWnd)
+std::optional<lycee_string> lycee::widgets::FileSelectDialog::showLoadDialog(HWND hParentWnd)
 {
 	return _show(hParentWnd, OFN_FILEMUSTEXIST, GetOpenFileName);
 }
 
-std::optional<lycee_string> lycee::FileSelectDialog::_show(HWND hParentWnd, DWORD dwFlags, std::function<BOOL(LPOPENFILENAME)> callback)
+std::optional<lycee_string> lycee::widgets::FileSelectDialog::_show(HWND hParentWnd, DWORD dwFlags, std::function<BOOL(LPOPENFILENAME)> callback)
 {
 	std::optional<lycee_string> result;
 	OPENFILENAME ofn = { 0 };
@@ -94,7 +102,7 @@ std::optional<lycee_string> lycee::FileSelectDialog::_show(HWND hParentWnd, DWOR
 	return result;
 }
 
-LPTSTR lycee::FileSelectDialog::buildFilter()
+LPTSTR lycee::widgets::FileSelectDialog::buildFilter()
 {
 	lycee_string::size_type length = 1;	// for last `\0`
 
@@ -138,52 +146,49 @@ LPTSTR lycee::FileSelectDialog::buildFilter()
 // MessageDialog
 // ============================================================================
 
-lycee::MessageDialog::~MessageDialog()
+lycee::widgets::MessageDialog::~MessageDialog()
 {
 	;
 }
 
-lycee::MessageDialog::MessageDialog()
-	: strTitle(TEXT("lycee::MessageDialog")),
+lycee::widgets::MessageDialog::MessageDialog()
+	: strTitle(TEXT("lycee::widgets::MessageDialog")),
 	strMsg(TEXT("Message")),
-	buttonType(lycee::MessageDialog::ButtonType::Ok),
-	iconType(lycee::MessageDialog::IconType::NoUse)
+	buttonType(lycee::widgets::MessageDialog::ButtonType::Ok),
+	iconType(lycee::widgets::MessageDialog::IconType::NoUse)
 {
 	;
 }
 
-lycee::MessageDialog& lycee::MessageDialog::title(const lycee_string &str)
+lycee::widgets::MessageDialog& lycee::widgets::MessageDialog::title(const lycee_string &str)
 {
 	strTitle = str;
 	return *this;
 }
 
-lycee::MessageDialog& lycee::MessageDialog::message(lycee_string fmt, ...)
+lycee::widgets::MessageDialog& lycee::widgets::MessageDialog::message(lycee_string fmt, ...)
 {
-	std::va_list args;
-	va_start(args, fmt);
-	auto text = lycee::Strings::format(fmt, args);
+	STRING_FORMAT(text, fmt);
 
 	if (text) {
 		this->strMsg = text.value();
 	}
-	va_end(args);
 	return *this;
 }
 
-lycee::MessageDialog& lycee::MessageDialog::button(ButtonType type)
+lycee::widgets::MessageDialog& lycee::widgets::MessageDialog::button(ButtonType type)
 {
 	buttonType = type;
 	return *this;
 }
 
-lycee::MessageDialog& lycee::MessageDialog::icon(IconType type)
+lycee::widgets::MessageDialog& lycee::widgets::MessageDialog::icon(IconType type)
 {
 	iconType = type;
 	return *this;
 }
 
-int lycee::MessageDialog::show(HWND hParentWnd)
+int lycee::widgets::MessageDialog::show(HWND hParentWnd)
 {
 	return MessageBox(
 		hParentWnd,
@@ -193,14 +198,11 @@ int lycee::MessageDialog::show(HWND hParentWnd)
 	);
 }
 
-int lycee::MessageDialog::info(HWND hWnd, lycee_string fmt, ...)
+int lycee::widgets::MessageDialog::info(HWND hWnd, lycee_string fmt, ...)
 {
-	std::va_list args;
-	va_start(args, fmt);
-	auto message = lycee::Strings::format(fmt, args);
-	va_end(args);
+	STRING_FORMAT(message, fmt);
 
-	return lycee::MessageDialog()
+	return lycee::widgets::MessageDialog()
 		.title(TEXT("Information"))
 		.message(message.value())
 		.button(ButtonType::Ok)
@@ -208,14 +210,11 @@ int lycee::MessageDialog::info(HWND hWnd, lycee_string fmt, ...)
 		.show(hWnd);
 }
 
-int lycee::MessageDialog::error(HWND hWnd, lycee_string fmt, ...)
+int lycee::widgets::MessageDialog::error(HWND hWnd, lycee_string fmt, ...)
 {
-	std::va_list args;
-	va_start(args, fmt);
-	auto message = lycee::Strings::format(fmt, args);
-	va_end(args);
+	STRING_FORMAT(message, fmt);
 
-	return lycee::MessageDialog()
+	return lycee::widgets::MessageDialog()
 		.title(TEXT("Error!!"))
 		.message(message.value())
 		.button(ButtonType::Ok)
@@ -223,14 +222,14 @@ int lycee::MessageDialog::error(HWND hWnd, lycee_string fmt, ...)
 		.show(hWnd);
 }
 
-int lycee::MessageDialog::confirm(HWND hWnd, lycee_string fmt, ...)
+int lycee::widgets::MessageDialog::confirm(HWND hWnd, lycee_string fmt, ...)
 {
 	std::va_list args;
 	va_start(args, fmt);
-	auto message = lycee::Strings::format(fmt, args);
+	auto message = lycee::commons::Strings::format(fmt, args);
 	va_end(args);
 
-	return lycee::MessageDialog()
+	return lycee::widgets::MessageDialog()
 		.title(TEXT("Confirmation"))
 		.message(message.value())
 		.button(ButtonType::OkCancel)
@@ -238,14 +237,11 @@ int lycee::MessageDialog::confirm(HWND hWnd, lycee_string fmt, ...)
 		.show(hWnd);
 }
 
-int lycee::MessageDialog::warning(HWND hWnd, lycee_string fmt, ...)
+int lycee::widgets::MessageDialog::warning(HWND hWnd, lycee_string fmt, ...)
 {
-	std::va_list args;
-	va_start(args, fmt);
-	auto message = lycee::Strings::format(fmt, args);
-	va_end(args);
+	STRING_FORMAT(message, fmt);
 
-	return lycee::MessageDialog()
+	return lycee::widgets::MessageDialog()
 		.title(TEXT("Warning!!"))
 		.message(message.value())
 		.button(ButtonType::Ok)
@@ -253,14 +249,11 @@ int lycee::MessageDialog::warning(HWND hWnd, lycee_string fmt, ...)
 		.show(hWnd);
 }
 
-int lycee::MessageDialog::retry(HWND hWnd, lycee_string fmt, ...)
+int lycee::widgets::MessageDialog::retry(HWND hWnd, lycee_string fmt, ...)
 {
-	std::va_list args;
-	va_start(args, fmt);
-	auto message = lycee::Strings::format(fmt, args);
-	va_end(args);
+	STRING_FORMAT(message, fmt);
 
-	return lycee::MessageDialog()
+	return lycee::widgets::MessageDialog()
 		.title(TEXT("Retry or Cancel?"))
 		.message(message.value())
 		.button(ButtonType::RetryCancel)
@@ -273,12 +266,12 @@ int lycee::MessageDialog::retry(HWND hWnd, lycee_string fmt, ...)
 // ColorPicker
 // ============================================================================
 
-lycee::ColorPicker::~ColorPicker()
+lycee::widgets::ColorPicker::~ColorPicker()
 {
 	delete[] cc.lpCustColors;
 }
 
-lycee::ColorPicker::ColorPicker()
+lycee::widgets::ColorPicker::ColorPicker()
 	: cc({ 0 })
 {
 	cc.lStructSize = sizeof(cc);
@@ -287,13 +280,13 @@ lycee::ColorPicker::ColorPicker()
 	cc.rgbResult = 0;
 }
 
-lycee::ColorPicker& lycee::ColorPicker::initColor(COLORREF color)
+lycee::widgets::ColorPicker& lycee::widgets::ColorPicker::initColor(COLORREF color)
 {
 	this->cc.rgbResult = color;
 	return *this;
 }
 
-std::optional<COLORREF> lycee::ColorPicker::show(HWND hParentWnd)
+std::optional<COLORREF> lycee::widgets::ColorPicker::show(HWND hParentWnd)
 {
 	cc.hwndOwner = hParentWnd;
 
@@ -304,3 +297,5 @@ std::optional<COLORREF> lycee::ColorPicker::show(HWND hParentWnd)
 	}
 	return result;
 }
+
+#undef STRING_FORMAT

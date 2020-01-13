@@ -3,40 +3,40 @@
 // ====================================================================================
 // Pen
 // ====================================================================================
-lycee::Pen::~Pen()
+lycee::gdis::Pen::~Pen()
 {
 }
 
-lycee::Pen::Pen()
+lycee::gdis::Pen::Pen()
 	: Pen(RGB(0,0,0), 1, PS_SOLID)
 {
 }
 
-lycee::Pen::Pen(COLORREF crColor)
+lycee::gdis::Pen::Pen(COLORREF crColor)
 	: Pen(crColor, 1, PS_SOLID)
 {
 }
 
-lycee::Pen::Pen(COLORREF crColor, int cWidth)
+lycee::gdis::Pen::Pen(COLORREF crColor, int cWidth)
 	: Pen(crColor, cWidth, PS_SOLID)
 {
 }
 
-lycee::Pen::Pen(COLORREF crColor, int cWidth, int iStyle)
+lycee::gdis::Pen::Pen(COLORREF crColor, int cWidth, int iStyle)
 	: color(crColor),
 	width(cWidth),
 	style(iStyle)
 {
 }
 
-lycee::Pen::Pen(const Pen &_Other)
+lycee::gdis::Pen::Pen(const Pen &_Other)
 	: color(_Other.color),
 	width(_Other.width),
 	style(_Other.style)
 {
 }
 
-lycee::Pen& lycee::Pen::operator =(const Pen& _Other)
+lycee::gdis::Pen& lycee::gdis::Pen::operator =(const Pen& _Other)
 {
 	if (this != &_Other) {
 		this->color = _Other.color;
@@ -46,7 +46,7 @@ lycee::Pen& lycee::Pen::operator =(const Pen& _Other)
 	return *this;
 }
 
-BOOL lycee::Pen::draw(HDC hdc, lycee::Pen::gui_callback callback) const
+BOOL lycee::gdis::Pen::draw(HDC hdc, lycee::gdis::Pen::gui_callback callback) const
 {
 	HPEN hPen = CreatePen(this->style, this->width, this->color);
 	if (hPen == NULL) {
@@ -65,7 +65,7 @@ BOOL lycee::Pen::draw(HDC hdc, lycee::Pen::gui_callback callback) const
 // Brush
 // ====================================================================================
 
-BOOL lycee::Brush::draw(HDC hdc, lycee::SolidBrush::gui_callback callback) const
+BOOL lycee::gdis::Brush::draw(HDC hdc, lycee::gdis::SolidBrush::gui_callback callback) const
 {
 	HBRUSH hBrush = this->create();
 	if (hBrush == NULL) {
@@ -81,26 +81,26 @@ BOOL lycee::Brush::draw(HDC hdc, lycee::SolidBrush::gui_callback callback) const
 	return res;
 }
 
-lycee::SolidBrush::~SolidBrush()
+lycee::gdis::SolidBrush::~SolidBrush()
 {
 }
 
-lycee::SolidBrush::SolidBrush()
+lycee::gdis::SolidBrush::SolidBrush()
 	: SolidBrush(RGB(0,0,0))
 {
 }
 
-lycee::SolidBrush::SolidBrush(COLORREF crColor)
+lycee::gdis::SolidBrush::SolidBrush(COLORREF crColor)
 	: color(crColor)
 {
 }
 
-lycee::SolidBrush::SolidBrush(const SolidBrush &_Other)
+lycee::gdis::SolidBrush::SolidBrush(const SolidBrush &_Other)
 	: color(_Other.color)
 {
 }
 
-lycee::SolidBrush& lycee::SolidBrush::operator =(const SolidBrush& _Other)
+lycee::gdis::SolidBrush& lycee::gdis::SolidBrush::operator =(const SolidBrush& _Other)
 {
 	if (this != &_Other) {
 		this->color = _Other.color;
@@ -108,7 +108,7 @@ lycee::SolidBrush& lycee::SolidBrush::operator =(const SolidBrush& _Other)
 	return *this;
 }
 
-HBRUSH lycee::SolidBrush::create() const
+HBRUSH lycee::gdis::SolidBrush::create() const
 {
 	return CreateSolidBrush(this->color);
 }
@@ -116,28 +116,28 @@ HBRUSH lycee::SolidBrush::create() const
 // ====================================================================================
 // Pencil
 // ====================================================================================
-lycee::Pencil::~Pencil()
+lycee::gdis::Pencil::~Pencil()
 {
 }
 
-lycee::Pencil::Pencil()
+lycee::gdis::Pencil::Pencil()
 	: Pencil(RGB(0, 0, 0))
 {
 }
 
-lycee::Pencil::Pencil(COLORREF crColor)
+lycee::gdis::Pencil::Pencil(COLORREF crColor)
 	: color(crColor),
 	bkMode(PencilMode::Transparent)
 {
 }
 
-lycee::Pencil::Pencil(const Pencil &_Other)
+lycee::gdis::Pencil::Pencil(const Pencil &_Other)
 	: color(_Other.color),
 	bkMode(_Other.bkMode)
 {
 }
 
-lycee::Pencil& lycee::Pencil::operator =(const Pencil& _Other)
+lycee::gdis::Pencil& lycee::gdis::Pencil::operator =(const Pencil& _Other)
 {
 	if (this != &_Other) {
 		this->color = _Other.color;
@@ -146,13 +146,13 @@ lycee::Pencil& lycee::Pencil::operator =(const Pencil& _Other)
 	return *this;
 }
 
-lycee::Pencil& lycee::Pencil::mode(lycee::Pencil::PencilMode pencilMode)
+lycee::gdis::Pencil& lycee::gdis::Pencil::mode(lycee::gdis::Pencil::PencilMode pencilMode)
 {
 	this->bkMode = pencilMode;
 	return *this;
 }
 
-BOOL lycee::Pencil::draw(HDC hdc, lycee::Pencil::gui_callback callback) const
+BOOL lycee::gdis::Pencil::draw(HDC hdc, lycee::gdis::Pencil::gui_callback callback) const
 {
 	COLORREF crOldColor = SetTextColor(hdc, this->color);
 	int oldMode = SetBkMode(hdc, this->bkMode);
@@ -167,47 +167,47 @@ BOOL lycee::Pencil::draw(HDC hdc, lycee::Pencil::gui_callback callback) const
 // ====================================================================================
 // Font
 // ====================================================================================
-lycee::Font::~Font()
+lycee::gdis::Font::~Font()
 {
 }
 
-lycee::Font::Font()
+lycee::gdis::Font::Font()
 	: logFont({ 0 })
 {
 	this->initialize(DefaultFontSize, Charset::DEFAULT, TEXT("Meiryo"));
 }
 
-lycee::Font::Font(int size)
+lycee::gdis::Font::Font(int size)
 	: logFont({ 0 })
 {
 	this->initialize(size, Charset::DEFAULT, TEXT("Meiryo"));
 }
 
-lycee::Font::Font(const lycee_string &faceName)
+lycee::gdis::Font::Font(const lycee_string &faceName)
 	: logFont({ 0 })
 {
 	this->initialize(DefaultFontSize, Charset::DEFAULT, faceName);
 }
 
-lycee::Font::Font(Charset charset)
+lycee::gdis::Font::Font(Charset charset)
 	: logFont({ 0 })
 {
 	this->initialize(DefaultFontSize, charset, TEXT(""));
 }
 
-lycee::Font::Font(int size, const lycee_string &faceName)
+lycee::gdis::Font::Font(int size, const lycee_string &faceName)
 	: logFont({ 0 })
 {
 	this->initialize(size, Charset::DEFAULT, faceName);
 }
 
-lycee::Font::Font(int size, Charset charset)
+lycee::gdis::Font::Font(int size, Charset charset)
 	: logFont({ 0 })
 {
 	this->initialize(size, charset, TEXT(""));
 }
 
-void lycee::Font::initialize(int size, Charset charset, const lycee_string &faceName)
+void lycee::gdis::Font::initialize(int size, Charset charset, const lycee_string &faceName)
 {
 	logFont.lfHeight = size;				// font size
 	logFont.lfWidth = 0L;
@@ -229,10 +229,14 @@ void lycee::Font::initialize(int size, Charset charset, const lycee_string &face
 	logFont.lfPitchAndFamily = 0L;			// pitch and family
 
 											// face name
+#if defined(UNICODE) || defined(_UNICODE)
+	wcscpy_s(logFont.lfFaceName, LF_FACESIZE, faceName.c_str());
+#else
 	strcpy_s(logFont.lfFaceName, LF_FACESIZE, faceName.c_str());
+#endif
 }
 
-lycee::Font::Font(const Font &_Other)
+lycee::gdis::Font::Font(const Font &_Other)
 	: logFont({ 0 })
 {
 	memcpy_s(
@@ -240,7 +244,7 @@ lycee::Font::Font(const Font &_Other)
 		&_Other.logFont, sizeof(_Other.logFont));
 }
 
-lycee::Font& lycee::Font::operator =(const Font &_Other)
+lycee::gdis::Font& lycee::gdis::Font::operator =(const Font &_Other)
 {
 	if (this != &_Other) {
 		memcpy_s(
@@ -250,37 +254,37 @@ lycee::Font& lycee::Font::operator =(const Font &_Other)
 	return *this;
 }
 
-lycee::Font& lycee::Font::size(int szHeight)
+lycee::gdis::Font& lycee::gdis::Font::size(int szHeight)
 {
 	logFont.lfHeight = szHeight;
 	return *this;
 }
 
-lycee::Font& lycee::Font::italic(bool bEnable)
+lycee::gdis::Font& lycee::gdis::Font::italic(bool bEnable)
 {
 	logFont.lfItalic = trif(bEnable, TRUE, FALSE);
 	return *this;
 }
 
-lycee::Font& lycee::Font::bold(bool bEnable)
+lycee::gdis::Font& lycee::gdis::Font::bold(bool bEnable)
 {
 	logFont.lfWeight = trif(bEnable, FW_BOLD, FW_NORMAL);
 	return *this;
 }
 
-lycee::Font& lycee::Font::underline(bool bEnable)
+lycee::gdis::Font& lycee::gdis::Font::underline(bool bEnable)
 {
 	logFont.lfUnderline = trif(bEnable, TRUE, FALSE);
 	return *this;
 }
 
-lycee::Font& lycee::Font::strikeout(bool bEnable)
+lycee::gdis::Font& lycee::gdis::Font::strikeout(bool bEnable)
 {
 	logFont.lfStrikeOut = trif(bEnable, TRUE, FALSE);
 	return *this;
 }
 
-BOOL lycee::Font::draw(HDC hdc, lycee::Font::gui_callback callback) const
+BOOL lycee::gdis::Font::draw(HDC hdc, lycee::gdis::Font::gui_callback callback) const
 {
 	HFONT hFont = CreateFontIndirect(&this->logFont);
 	if (hFont == NULL) {

@@ -1,22 +1,10 @@
 #ifndef __LYCEE__PANELS__HEADER__
 #define __LYCEE__PANELS__HEADER__
 
-#include "includes.h"
+#include "..\lycee.h"
+
 
 namespace lycee {
-
-	// ----------------------------------
-	// WindowPainter.h
-	class WindowPainter;
-
-	// ----------------------------------
-	// ImageProcessor.h
-	class ImageProcessor;
-
-	// ----------------------------------
-	// Image.h
-	class Image;
-
 
 	// ----------------------------------
 	// Panel Profile
@@ -77,7 +65,7 @@ namespace lycee {
 
 		explicit Panel(
 			const lycee_string &type,
-			ImageProcessor *target,
+			lycee::images::ImageProcessor *target,
 			const POINT &pos,
 			const SIZE &size,
 			const bool input,
@@ -86,9 +74,9 @@ namespace lycee {
 
 		virtual HITTEST_TYPE hittest(long x, long y);
 
-		virtual BOOL render(WindowPainter *painter);
+		virtual BOOL render(lycee::gdis::WindowPainter *painter);
 
-		virtual Image process(const Image &srcimg);
+		virtual lycee::images::Image process(const lycee::images::Image &srcimg);
 
 		bool acceptInput() const {
 			return this->accept[JointType::INPUT] && !this->accept[JointType::OUTPUT];
@@ -131,7 +119,7 @@ namespace lycee {
 	private:
 		lycee_string strType;
 		lycee_string strName;
-		ImageProcessor *processor;
+		lycee::images::ImageProcessor *processor;
 
 		POINT ptPanel;
 		SIZE szPanel;
@@ -145,11 +133,11 @@ namespace lycee {
 
 		void calcRenderRect();
 
-		void renderJoint(WindowPainter * painter);
-		void renderPanel(WindowPainter * painter);
+		void renderJoint(lycee::gdis::WindowPainter * painter);
+		void renderPanel(lycee::gdis::WindowPainter * painter);
 
 	public:
-		static Panel* newFilter(const POINT &pos, ImageProcessor *processor)
+		static Panel* newFilter(const POINT &pos, lycee::images::ImageProcessor *processor)
 		{
 			return new lycee::Panel(
 				TEXT("FILTER"),
@@ -161,7 +149,7 @@ namespace lycee {
 			);
 		}
 
-		static Panel* newInput(const POINT &pos, ImageProcessor *inputProcessor)
+		static Panel* newInput(const POINT &pos, lycee::images::ImageProcessor *inputProcessor)
 		{
 			return new lycee::Panel(
 				TEXT("INPUT"),
@@ -173,7 +161,7 @@ namespace lycee {
 			);
 		}
 
-		static Panel* newOutput(const POINT &pos, ImageProcessor *outputProcessor)
+		static Panel* newOutput(const POINT &pos, lycee::images::ImageProcessor *outputProcessor)
 		{
 			return new lycee::Panel(
 				TEXT("OUTPUT"),

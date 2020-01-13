@@ -1,10 +1,13 @@
-#ifndef __GLOBAL__INCLUDES__HEADER__
-#define __GLOBAL__INCLUDES__HEADER__
+#ifndef __LYCEE__INCLUDES__HEADER__
+#define __LYCEE__INCLUDES__HEADER__
 
 
 #include <Windows.h>
 #include <WindowsX.h>
 
+#include <cstdarg>
+
+#include <optional>
 #include <functional>
 
 #include <deque>
@@ -13,15 +16,14 @@
 
 #include <string>
 
-typedef std::basic_string<TCHAR> lycee_string;
-
-
 #include <opencv2\opencv.hpp>
 
+
+typedef std::basic_string<TCHAR> lycee_string;
 
 #define trif(cond, trueState, falseState)	(cond) ? (trueState) : (falseState)
 #define GRAY(v)		RGB((v), (v), (v))
 
 
 
-#endif	// __GLOBAL__INCLUDES__HEADER__
+#endif	// __LYCEE__INCLUDES__HEADER__
