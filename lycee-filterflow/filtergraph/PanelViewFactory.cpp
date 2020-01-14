@@ -19,13 +19,8 @@ lycee::filtergraph::AbstractPanelViewFactory::AbstractPanelViewFactory(const lyc
 lycee_string lycee::filtergraph::AbstractPanelViewFactory::generateName()
 {
 	int curIndex = this->index++;
-	TCHAR temp[100] = { 0 };
-#if defined(UNICODE) || defined(_UNICODE)
-	swprintf(temp, this->strTemplate.c_str(), curIndex);
-#else
-	sprintf(temp, this->strTemplate.c_str(), curIndex);
-#endif
-	return lycee_string(temp);
+	auto result = lycee::commons::Strings::printf(temp, curIndex);
+	return result ? result.value() : lycee_string();
 }
 
 
@@ -38,8 +33,8 @@ lycee::filtergraph::InputPanelViewFactory::~InputPanelViewFactory()
 	;
 }
 
-lycee::filtergraph::InputPanelViewFactory::InputPanelViewFactory()
-	: lycee::filtergraph::AbstractPanelViewFactory(TEXT("Input_%03d"))
+lycee::filtergraph::InputPanelViewFactory::InputPanelViewFactory(const lycee_string &nameTemplate)
+	: lycee::filtergraph::AbstractPanelViewFactory(nameTamplate)
 {
 	;
 }
@@ -64,8 +59,8 @@ lycee::filtergraph::FilterPanelViewFactory::~FilterPanelViewFactory()
 	;
 }
 
-lycee::filtergraph::FilterPanelViewFactory::FilterPanelViewFactory()
-	: lycee::filtergraph::AbstractPanelViewFactory(TEXT("Filter_%03d"))
+lycee::filtergraph::FilterPanelViewFactory::FilterPanelViewFactory(const lycee_string &nameTemplate)
+	: lycee::filtergraph::AbstractPanelViewFactory(nameTemplate)
 {
 	;
 }
@@ -92,8 +87,8 @@ lycee::filtergraph::OutputPanelViewFactory::~OutputPanelViewFactory()
 	;
 }
 
-lycee::filtergraph::OutputPanelViewFactory::OutputPanelViewFactory()
-	: lycee::filtergraph::AbstractPanelViewFactory(TEXT("Output_%03d"))
+lycee::filtergraph::OutputPanelViewFactory::OutputPanelViewFactory(const lycee_string &nameTemplate)
+	: lycee::filtergraph::AbstractPanelViewFactory(nameTemplate)
 {
 	;
 }

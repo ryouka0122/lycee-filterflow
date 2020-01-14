@@ -42,9 +42,9 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
 	
-	factories.push_back(new lycee::filtergraph::InputPanelViewFactory());
-	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory());
-	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory());
+	factories.push_back(new lycee::filtergraph::InputPanelViewFactory(TEXT("Input[%03d]")));
+	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory(TEXT("Output[%03d]")));
+	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory(TEXT("Filter[%03d]")));
 
 	input = factories[0]->create(POINT{ 100, 100 }, lycee::images::ImageProcessor::getDefault());
 	output = factories[1]->create(POINT{ 550, 300 }, lycee::images::ImageProcessor::getDefault());
