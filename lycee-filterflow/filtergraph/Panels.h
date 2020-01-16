@@ -135,13 +135,13 @@ namespace lycee {
 				this->panel->adjustRenderRect();
 			}
 
-			void render(lycee::gdis::WindowPainter *painter);
+			void render(lycee::graphics::WindowPainter *painter);
 
 		private:
 			Panel * panel;
 
-			void renderJoint(lycee::gdis::WindowPainter * painter);
-			void renderPanel(lycee::gdis::WindowPainter * painter);
+			void renderJoint(lycee::graphics::WindowPainter * painter);
+			void renderPanel(lycee::graphics::WindowPainter * painter);
 
 		};
 

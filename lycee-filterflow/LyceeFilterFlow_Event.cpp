@@ -33,7 +33,7 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 	delete output;
 
 	for (auto iter = factories.begin(); iter != factories.end(); iter++) {
-		delete *iter;
+		delete (*iter);
 	}
 	factories.clear();
 	return 0L;
@@ -73,7 +73,7 @@ LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM
 
 LRESULT lycee::LyceeFilterFlow::doPaint(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
-	lycee::gdis::WindowPainter painter(hWnd);
+	lycee::graphics::WindowPainter painter(hWnd);
 
 	input->render(&painter);
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {

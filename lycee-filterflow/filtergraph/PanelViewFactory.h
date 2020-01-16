@@ -11,8 +11,6 @@ namespace lycee {
 
 		class PanelViewFactory {
 		public:
-			virtual ~PanelViewFactory() = 0 { }
-
 			virtual PanelView *create(const POINT &pos, lycee::images::ImageProcessor *processor) = 0;
 
 		};

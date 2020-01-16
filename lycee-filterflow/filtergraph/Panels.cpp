@@ -85,7 +85,7 @@ lycee::filtergraph::HITTEST_TYPE lycee::filtergraph::PanelView::hittest(long x, 
 	return lycee::filtergraph::HITTEST_TYPE::NONE;
 }
 
-void lycee::filtergraph::PanelView::render(lycee::gdis::WindowPainter *painter)
+void lycee::filtergraph::PanelView::render(lycee::graphics::WindowPainter *painter)
 {
 	this->renderJoint(painter);
 	this->renderPanel(painter);
@@ -103,10 +103,10 @@ bool lycee::filtergraph::PanelView::isAccept(JointType type) const
 }
 
 
-void lycee::filtergraph::PanelView::renderJoint(lycee::gdis::WindowPainter * painter)
+void lycee::filtergraph::PanelView::renderJoint(lycee::graphics::WindowPainter * painter)
 {
-	lycee::gdis::SolidBrush face(PanelProfile::JOINT_COLOR_FACE);
-	lycee::gdis::Pen edge(PanelProfile::JOINT_COLOR_EDGE);
+	lycee::graphics::SolidBrush face(PanelProfile::JOINT_COLOR_FACE);
+	lycee::graphics::Pen edge(PanelProfile::JOINT_COLOR_EDGE);
 
 	// -------------------------------------------------------------
 	// render joint
@@ -118,12 +118,12 @@ void lycee::filtergraph::PanelView::renderJoint(lycee::gdis::WindowPainter * pai
 	}
 }
 
-void lycee::filtergraph::PanelView::renderPanel(lycee::gdis::WindowPainter * painter)
+void lycee::filtergraph::PanelView::renderPanel(lycee::graphics::WindowPainter * painter)
 {
-	lycee::gdis::Pen edgePen(PanelProfile::TEXT_COLOR, 1);
-	lycee::gdis::SolidBrush faceBrush(PanelProfile::BACKGROUND_COLOR);
-	lycee::gdis::Pencil textPencil(PanelProfile::TEXT_COLOR);
-	lycee::gdis::Font textFont;
+	lycee::graphics::Pen edgePen(PanelProfile::TEXT_COLOR, 1);
+	lycee::graphics::SolidBrush faceBrush(PanelProfile::BACKGROUND_COLOR);
+	lycee::graphics::Pencil textPencil(PanelProfile::TEXT_COLOR);
+	lycee::graphics::Font textFont;
 
 	// -------------------------------------------------------------
 	// render title

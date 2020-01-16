@@ -7,7 +7,7 @@
 
 namespace lycee {
 
-	namespace gdis {
+	namespace graphics {
 
 		// ==================================================================
 		// DeviceHandler

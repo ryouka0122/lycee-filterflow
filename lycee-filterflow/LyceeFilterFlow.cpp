@@ -28,12 +28,12 @@ BOOL lycee::LyceeFilterFlow::start(const lycee_string &title, int width, int hei
 	return this->run(title, width, height, nCmdShow);
 }
 
-BOOL lycee::LyceeFilterFlow::renderEdge(lycee::gdis::WindowPainter *painter)
+BOOL lycee::LyceeFilterFlow::renderEdge(lycee::graphics::WindowPainter *painter)
 {
-	lycee::gdis::Pen edge(lycee::filtergraph::PanelProfile::LINE_BASECOLOR, 1);
-	lycee::gdis::Pen line(lycee::filtergraph::PanelProfile::LINE_BASECOLOR, 1);
-	lycee::gdis::SolidBrush faceBegin(lycee::filtergraph::PanelProfile::LINE_BEGIN_FACECOLOR);
-	lycee::gdis::SolidBrush faceEnd(lycee::filtergraph::PanelProfile::LINE_END_FACECOLOR);
+	lycee::graphics::Pen edge(lycee::filtergraph::PanelProfile::LINE_BASECOLOR, 1);
+	lycee::graphics::Pen line(lycee::filtergraph::PanelProfile::LINE_BASECOLOR, 1);
+	lycee::graphics::SolidBrush faceBegin(lycee::filtergraph::PanelProfile::LINE_BEGIN_FACECOLOR);
+	lycee::graphics::SolidBrush faceEnd(lycee::filtergraph::PanelProfile::LINE_END_FACECOLOR);
 
 	for (auto iter = jointList.begin(); iter != jointList.end(); iter++) {
 		std::optional<POINT> ptBegin = iter->first->getJointPt(filtergraph::JointType::OUTPUT);

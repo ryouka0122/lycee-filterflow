@@ -46,7 +46,7 @@ namespace lycee {
 		typedef std::pair<lycee::filtergraph::PanelView*, lycee::filtergraph::PanelView*> JointFlow;
 		std::list<JointFlow> jointList;
 
-		BOOL renderEdge(lycee::gdis::WindowPainter *painter);
+		BOOL renderEdge(lycee::graphics::WindowPainter *painter);
 
 	private:
 		lycee::widgets::FileSelectDialog fileSelectDialog;

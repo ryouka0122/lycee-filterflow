@@ -6,27 +6,27 @@
 // DeviceHandler
 // ==================================================================
 
-lycee::gdis::DeviceContextHandler::~DeviceContextHandler()
+lycee::graphics::DeviceContextHandler::~DeviceContextHandler()
 {
 }
 
-lycee::gdis::DeviceContextHandler::DeviceContextHandler(HDC hTargetDC)
+lycee::graphics::DeviceContextHandler::DeviceContextHandler(HDC hTargetDC)
 	: hdc(hTargetDC)
 {
 }
 
-HDC lycee::gdis::DeviceContextHandler::getHDC()
+HDC lycee::graphics::DeviceContextHandler::getHDC()
 {
 	return this->hdc;
 }
 
 
-lycee::gdis::WindowHandler::~WindowHandler()
+lycee::graphics::WindowHandler::~WindowHandler()
 {
 	EndPaint(this->hWnd, &this->ps);
 }
 
-lycee::gdis::WindowHandler::WindowHandler(HWND hTargetWnd)
+lycee::graphics::WindowHandler::WindowHandler(HWND hTargetWnd)
 	: hWnd(hTargetWnd),
 	hdc(NULL),
 	ps({ 0 })
@@ -34,7 +34,7 @@ lycee::gdis::WindowHandler::WindowHandler(HWND hTargetWnd)
 	hdc = BeginPaint(hWnd, &ps);
 }
 
-HDC lycee::gdis::WindowHandler::getHDC()
+HDC lycee::graphics::WindowHandler::getHDC()
 {
 	return this->hdc;
 }
@@ -42,18 +42,18 @@ HDC lycee::gdis::WindowHandler::getHDC()
 // ==================================================================
 // WindowPainter
 // ==================================================================
-lycee::gdis::WindowPainter::~WindowPainter()
+lycee::graphics::WindowPainter::~WindowPainter()
 {
 	delete handler;
 }
 
-lycee::gdis::WindowPainter::WindowPainter(HWND hWnd)
-	: handler(new lycee::gdis::WindowHandler(hWnd))
+lycee::graphics::WindowPainter::WindowPainter(HWND hWnd)
+	: handler(new lycee::graphics::WindowHandler(hWnd))
 {
 }
 
-lycee::gdis::WindowPainter::WindowPainter(HDC hdc)
-	: handler(new lycee::gdis::DeviceContextHandler(hdc))
+lycee::graphics::WindowPainter::WindowPainter(HDC hdc)
+	: handler(new lycee::graphics::DeviceContextHandler(hdc))
 {
 
 }
@@ -61,7 +61,7 @@ lycee::gdis::WindowPainter::WindowPainter(HDC hdc)
 // ==================================================================
 // lines 
 
-BOOL lycee::gdis::WindowPainter::line(const Pen &pen, long x1, long y1, long x2, long y2)
+BOOL lycee::graphics::WindowPainter::line(const Pen &pen, long x1, long y1, long x2, long y2)
 {
 	POINT pts[2] = {
 		{ x1, y1 },
@@ -70,7 +70,7 @@ BOOL lycee::gdis::WindowPainter::line(const Pen &pen, long x1, long y1, long x2,
 	return this->polyline(pen, 2, pts);
 }
 
-BOOL lycee::gdis::WindowPainter::polyline(const Pen &pen, int cSize, const LPPOINT pts)
+BOOL lycee::graphics::WindowPainter::polyline(const Pen &pen, int cSize, const LPPOINT pts)
 {
 	return this->draw(
 		pen,
@@ -78,14 +78,14 @@ BOOL lycee::gdis::WindowPainter::polyline(const Pen &pen, int cSize, const LPPOI
 	);
 }
 
-BOOL lycee::gdis::WindowPainter::curve(const Pen &pen, int cSize, const LPPOINT pts)
+BOOL lycee::graphics::WindowPainter::curve(const Pen &pen, int cSize, const LPPOINT pts)
 {
 	return this->draw(
 		pen,
 		[&](HDC hdc) { return PolyBezier(hdc, pts, cSize); }
 	);
 }
-BOOL lycee::gdis::WindowPainter::draw(const Pen &pen, std::function<BOOL(HDC)> callback)
+BOOL lycee::graphics::WindowPainter::draw(const Pen &pen, std::function<BOOL(HDC)> callback)
 {
 	return pen.draw(
 		this->handler->getHDC(),
@@ -95,7 +95,7 @@ BOOL lycee::gdis::WindowPainter::draw(const Pen &pen, std::function<BOOL(HDC)> c
 
 // ==================================================================
 // faces
-BOOL lycee::gdis::WindowPainter::rectangle(
+BOOL lycee::graphics::WindowPainter::rectangle(
 	const Brush &brush,
 	const Pen &pen,
 	const RECT &rect)
@@ -107,7 +107,7 @@ BOOL lycee::gdis::WindowPainter::rectangle(
 	});
 }
 
-BOOL lycee::gdis::WindowPainter::ellipse(
+BOOL lycee::graphics::WindowPainter::ellipse(
 	const Brush &brush,
 	const Pen &pen,
 	const RECT &rect)
@@ -119,7 +119,7 @@ BOOL lycee::gdis::WindowPainter::ellipse(
 	});
 }
 
-BOOL lycee::gdis::WindowPainter::roundRect(
+BOOL lycee::graphics::WindowPainter::roundRect(
 	const Brush &brush,
 	const Pen &pen,
 	const RECT &rect,
@@ -133,7 +133,7 @@ BOOL lycee::gdis::WindowPainter::roundRect(
 	});
 }
 
-BOOL lycee::gdis::WindowPainter::fill(
+BOOL lycee::graphics::WindowPainter::fill(
 	const Brush &brush,
 	const Pen &pen,
 	std::function<BOOL(HDC)> callback)
@@ -145,7 +145,7 @@ BOOL lycee::gdis::WindowPainter::fill(
 
 // ==================================================================
 // text
-BOOL lycee::gdis::WindowPainter::text(
+BOOL lycee::graphics::WindowPainter::text(
 	const Pencil &pencil,
 	const Font &font,
 	const lycee_string &text,
