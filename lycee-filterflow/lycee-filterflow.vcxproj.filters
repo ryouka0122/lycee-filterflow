@@ -13,6 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ヘッダー ファイル\commons">
+      <UniqueIdentifier>{5daaa5a7-4b0a-4a2e-ba1e-a4548c3d587d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\graphics">
+      <UniqueIdentifier>{80e34b6d-a554-4587-a1e8-4e6290217861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\widgets">
+      <UniqueIdentifier>{670309b6-ee87-41db-a0e8-afcde635d052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\filtergraph">
+      <UniqueIdentifier>{a8633e0f-0cd2-46e5-8911-230cc3946845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\images">
+      <UniqueIdentifier>{b2bb4e10-f190-428c-8fce-72ca8a4670dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\commons">
+      <UniqueIdentifier>{fbeafd35-0076-48a2-9ac2-4817d2449362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\graphics">
+      <UniqueIdentifier>{6db86004-4b1d-40d1-bb8f-0e384f49bd22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\filtergraph">
+      <UniqueIdentifier>{ab9a6990-67f3-40a6-b031-a105780241b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\widgets">
+      <UniqueIdentifier>{482a6d27-1ca4-409c-a18a-557ece944f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\images">
+      <UniqueIdentifier>{0d5eaf7f-a750-4bb8-92e4-f3f6a3ce2a49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="lycee-filterflow.rc">
@@ -20,49 +50,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lycee\commons.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\gdis.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\images.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="lycee\includes.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\widgets.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\commons\Utils.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\gdis\Stationary.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\gdis\WindowPainter.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\images\Image.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\images\ImageProcessor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\widgets\Application.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lycee\widgets\Dialog.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="filtergraph\FilterGraph.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="filtergraph\Panels.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="filtergraph.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="lycee.h">
@@ -74,41 +62,56 @@
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="lycee\commons.h">
+      <Filter>ヘッダー ファイル\commons</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\commons\Utils.h">
+      <Filter>ヘッダー ファイル\commons</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\gdis.h">
+      <Filter>ヘッダー ファイル\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\gdis\Stationary.h">
+      <Filter>ヘッダー ファイル\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\gdis\WindowPainter.h">
+      <Filter>ヘッダー ファイル\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\widgets\Application.h">
+      <Filter>ヘッダー ファイル\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\widgets\Dialog.h">
+      <Filter>ヘッダー ファイル\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\widgets.h">
+      <Filter>ヘッダー ファイル\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\widgets\Menus.h">
+      <Filter>ヘッダー ファイル\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="filtergraph\FilterGraph.h">
+      <Filter>ヘッダー ファイル\filtergraph</Filter>
+    </ClInclude>
+    <ClInclude Include="filtergraph.h">
+      <Filter>ヘッダー ファイル\filtergraph</Filter>
+    </ClInclude>
+    <ClInclude Include="filtergraph\Panels.h">
+      <Filter>ヘッダー ファイル\filtergraph</Filter>
+    </ClInclude>
     <ClInclude Include="filtergraph\PanelViewFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\filtergraph</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\images\Image.h">
+      <Filter>ヘッダー ファイル\images</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\images\ImageProcessor.h">
+      <Filter>ヘッダー ファイル\images</Filter>
+    </ClInclude>
+    <ClInclude Include="lycee\images.h">
+      <Filter>ヘッダー ファイル\images</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lycee\commons\Utils.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\gdis\Stationary.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\gdis\WindowPainter.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\images\Image.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\images\ImageProcessor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\widgets\Application.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\widgets\Dialog.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lycee\widgets\MainEventController.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="filtergraph\FilterGraph.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="filtergraph\Panels.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="LyceeFilterFlow.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -118,8 +121,44 @@
     <ClCompile Include="Program.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="filtergraph\PanelViewFactory.cpp">
+    <ClCompile Include="LyceeFilterFlow_Menu.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\commons\Utils.cpp">
+      <Filter>ソース ファイル\commons</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\gdis\Stationary.cpp">
+      <Filter>ソース ファイル\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="filtergraph\FilterGraph.cpp">
+      <Filter>ソース ファイル\filtergraph</Filter>
+    </ClCompile>
+    <ClCompile Include="filtergraph\PanelViewFactory.cpp">
+      <Filter>ソース ファイル\filtergraph</Filter>
+    </ClCompile>
+    <ClCompile Include="filtergraph\Panels.cpp">
+      <Filter>ソース ファイル\filtergraph</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\widgets\Application.cpp">
+      <Filter>ソース ファイル\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\widgets\Dialog.cpp">
+      <Filter>ソース ファイル\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\widgets\MainEventController.cpp">
+      <Filter>ソース ファイル\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\widgets\Menus.cpp">
+      <Filter>ソース ファイル\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\gdis\WindowPainter.cpp">
+      <Filter>ソース ファイル\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\images\Image.cpp">
+      <Filter>ソース ファイル\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\images\ImageProcessor.cpp">
+      <Filter>ソース ファイル\images</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

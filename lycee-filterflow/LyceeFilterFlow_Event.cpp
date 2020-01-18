@@ -20,6 +20,8 @@ LRESULT lycee::LyceeFilterFlow::dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, L
 		return this->doLButtonDown(hWnd, uMsg, wp, lp);
 	case WM_LBUTTONUP:
 		return this->doLButtonUp(hWnd, uMsg, wp, lp);
+	case WM_RBUTTONDOWN:
+		return this->doRButtonDown(hWnd, uMsg, wp, lp);
 	}
 	return DefWindowProc(hWnd, uMsg, wp, lp);
 }
@@ -36,12 +38,13 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		delete (*iter);
 	}
 	factories.clear();
+
+	delete popupMenu;
 	return 0L;
 }
 
 LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
-	
 	factories.push_back(new lycee::filtergraph::InputPanelViewFactory(TEXT("Input[%03d]")));
 	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory(TEXT("Output[%03d]")));
 	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory(TEXT("Filter[%03d]")));
@@ -68,6 +71,10 @@ LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM
 		.filter(TEXT("jpg"), TEXT("JPEG File"))
 		.filter(TEXT("gif"), TEXT("GIF Image"))
 		.filter(TEXT("*"), TEXT("All Files"));
+
+
+	popupMenu = lycee::widgets::PopupMenu::fromResource(this->getHINSTANCE(), IDR_MENU1);
+
 	return 0L;
 }
 
@@ -110,18 +117,32 @@ LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		break;
 	case ID_FILE_OPEN:
 		openDialog();
-		break;
+		return 0L;
 	case ID_FILE_SAVE:
 		msg = TEXT("[File]>[SAVE]");
 		break;
 	case ID_FILE_SAVE_AS:
 		saveDialog();
-		break;
+		return 0L;
 	case ID_FILE_QUIT:
 		if(IDOK == lycee::widgets::MessageDialog::confirm(hWnd, TEXT("I—¹‚µ‚Ü‚·‚©H"))) {
 			DestroyWindow(hWnd);
 		}
+		return 0L;
+
+	case ID_ADDPANEL_FILTER:
+		msg = TEXT("[Add Panel]>[Filter]");
 		break;
+	case ID_ADDPANEL_INPUT:
+		msg = TEXT("[Add Panel]>[Input]");
+		break;
+	case ID_ADDPANEL_OUTPUT:
+		msg = TEXT("[Add Panel]>[Output]");
+		break;
+	case ID__DELETEPANEL:
+		msg = TEXT("[Delete Panel]");
+		break;
+
 	}
 
 	if (!msg.empty()) {

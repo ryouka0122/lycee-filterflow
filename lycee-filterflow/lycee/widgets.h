@@ -5,5 +5,7 @@
 
 #include "widgets\Dialog.h"
 
+#include "widgets\Menus.h"
+
 
 #endif	// __LYCEE__WIDGETS__HEADER__

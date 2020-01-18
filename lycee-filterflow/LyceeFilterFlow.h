@@ -29,7 +29,6 @@ namespace lycee {
 		virtual LRESULT doMouseMove(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
 		virtual LRESULT doLButtonUp(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
 
-
 	private:
 		std::deque<lycee::filtergraph::PanelViewFactory*> factories;
 		
@@ -53,6 +52,15 @@ namespace lycee {
 
 		void openDialog();
 		void saveDialog();
+
+	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+	// Context Menu Event
+	public:
+		virtual LRESULT doRButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+
+	private:
+		lycee::widgets::PopupMenu *popupMenu;
+		POINT ptBtnRight;
 
 	};
 

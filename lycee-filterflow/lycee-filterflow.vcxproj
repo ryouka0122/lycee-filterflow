@@ -145,6 +145,7 @@
     <ClInclude Include="lycee\widgets.h" />
     <ClInclude Include="lycee\widgets\Application.h" />
     <ClInclude Include="lycee\widgets\Dialog.h" />
+    <ClInclude Include="lycee\widgets\Menus.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +154,7 @@
     <ClCompile Include="filtergraph\PanelViewFactory.cpp" />
     <ClCompile Include="LyceeFilterFlow.cpp" />
     <ClCompile Include="LyceeFilterFlow_Event.cpp" />
+    <ClCompile Include="LyceeFilterFlow_Menu.cpp" />
     <ClCompile Include="lycee\commons\Utils.cpp" />
     <ClCompile Include="lycee\gdis\Stationary.cpp" />
     <ClCompile Include="lycee\gdis\WindowPainter.cpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="lycee\widgets\Application.cpp" />
     <ClCompile Include="lycee\widgets\Dialog.cpp" />
     <ClCompile Include="lycee\widgets\MainEventController.cpp" />
+    <ClCompile Include="lycee\widgets\Menus.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
