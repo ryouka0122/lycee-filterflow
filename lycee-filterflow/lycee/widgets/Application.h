@@ -23,6 +23,10 @@ namespace lycee {
 				return this->hWnd;
 			}
 
+			HINSTANCE getHINSTANCE() {
+				return this->hInstance;
+			}
+
 		protected:
 			virtual LRESULT dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp) = 0;
 
