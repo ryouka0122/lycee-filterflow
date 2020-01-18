@@ -1,32 +1,30 @@
 #include "FilterGraph.h"
 
-#include "Panels.h"
 
-
-lycee::FilterGraph::~FilterGraph()
+lycee::filtergraph::FilterGraph::~FilterGraph()
 {
 }
 
-lycee::FilterGraph::FilterGraph(HWND hTargetWnd)
+lycee::filtergraph::FilterGraph::FilterGraph(HWND hTargetWnd)
 	: hWnd(hTargetWnd),
 	panelList(),
 	edgeList()
 {
 }
 
-void lycee::FilterGraph::insertPanel(Panel *panel)
+void lycee::filtergraph::FilterGraph::insertPanel(Panel *panel)
 {
 	this->panelList.push_back(panel);
 }
 
-void lycee::FilterGraph::joinPanel(panel_size_type begin, panel_size_type end)
+void lycee::filtergraph::FilterGraph::joinPanel(panel_size_type begin, panel_size_type end)
 {
-	this->edgeList.push_back(lycee::Edge{begin, end});
+	this->edgeList.push_back(lycee::filtergraph::Edge{begin, end});
 }
 
-void lycee::FilterGraph::render(HDC hdc)
+void lycee::filtergraph::FilterGraph::render(HDC hdc)
 {
-	lycee::gdis::WindowPainter painter(hdc);
+	lycee::graphics::WindowPainter painter(hdc);
 
 	for (auto iter = this->panelList.begin(); iter != this->panelList.end(); iter++) {
 		renderPanel(&painter, *iter);
@@ -38,12 +36,12 @@ void lycee::FilterGraph::render(HDC hdc)
 
 }
 
-void lycee::FilterGraph::renderPanel(lycee::gdis::WindowPainter* painter, Panel *panel)
+void lycee::filtergraph::FilterGraph::renderPanel(lycee::graphics::WindowPainter* painter, Panel *panel)
 {
 
 }
 
-void lycee::FilterGraph::renderEdge(lycee::gdis::WindowPainter* painter, Edge *edge)
+void lycee::filtergraph::FilterGraph::renderEdge(lycee::graphics::WindowPainter* painter, Edge *edge)
 {
 	;
 }

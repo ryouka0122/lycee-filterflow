@@ -26,6 +26,25 @@ namespace lycee {
 				return _wformat(fmt, args);
 			}
 
+			template<typename char_type>
+			static std::optional<std::basic_string<char_type>> printf(std::basic_string<char_type> fmt, ...) {
+				std::va_list _args;
+				va_start(_args, fmt);
+				std::optional<std::basic_string<char_type>> result = _format(fmt, _args);
+				va_end(_args);
+				return result;
+			}
+
+			template<>
+			static std::optional<std::basic_string<wchar_t>> printf<wchar_t>(std::basic_string<wchar_t> fmt, ...) {
+				std::va_list _args;
+				va_start(_args, fmt);
+				std::optional<std::basic_string<wchar_t>> result = _wformat(fmt, _args);
+				va_end(_args);
+				return result;
+			}
+
+
 		private:
 			static std::optional<std::string> _format(std::string fmt, std::va_list vargs);
 

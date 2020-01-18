@@ -3,17 +3,17 @@
 // ============================================================================================
 // Panel
 // ============================================================================================
-lycee::Panel::~Panel()
+lycee::filtergraph::Panel::~Panel()
 {
 }
 
-lycee::Panel::Panel(
+lycee::filtergraph::Panel::Panel(
 	const lycee_string &type,
 	lycee::images::ImageProcessor *target,
 	const POINT &pos,
 	const SIZE &size,
-	const bool input,
-	const bool output
+	bool input,
+	bool output
 )
 	: strType(type),
 	strName(target->name()),
@@ -25,10 +25,10 @@ lycee::Panel::Panel(
 	accept[INPUT] = input;
 	accept[OUTPUT] = output;
 
-	this->calcRenderRect();
+	this->adjustRenderRect();
 }
 
-void lycee::Panel::calcRenderRect()
+void lycee::filtergraph::Panel::adjustRenderRect()
 {
 	rcJoint[INPUT].left		= ptPanel.x - PanelProfile::JOINT_WIDTH;
 	rcJoint[INPUT].top		= ptPanel.y + szPanel.cy / 2 - PanelProfile::JOINT_HEIGHT / 2;
@@ -51,7 +51,7 @@ void lycee::Panel::calcRenderRect()
 		ptPanel.x,
 		ptPanel.y,
 		ptPanel.x + szPanel.cx,
-		ptPanel.y + lycee::PanelProfile::TITLE_HEIGHT,
+		ptPanel.y + PanelProfile::TITLE_HEIGHT,
 	};
 
 	rcContent = {
@@ -62,47 +62,68 @@ void lycee::Panel::calcRenderRect()
 	};
 }
 
-lycee::Panel::HITTEST_TYPE lycee::Panel::hittest(long x, long y)
+
+// ============================================================================================
+// PanelView
+// ============================================================================================
+lycee::filtergraph::PanelView::~PanelView()
 {
-	if (PtInRect(&rcPanel, POINT{ x, y })) {
-		return HITTEST_TYPE::BODY;
-	}
-	return lycee::Panel::HITTEST_TYPE::NONE;
+	delete this->panel;
 }
 
-BOOL lycee::Panel::render(lycee::gdis::WindowPainter *painter)
+lycee::filtergraph::PanelView::PanelView(Panel *target)
+	: panel(target)
+{
+	;
+}
+
+lycee::filtergraph::HITTEST_TYPE lycee::filtergraph::PanelView::hittest(long x, long y)
+{
+	if (PtInRect(&this->panel->rcPanel, POINT{ x, y })) {
+		return HITTEST_TYPE::BODY;
+	}
+	return lycee::filtergraph::HITTEST_TYPE::NONE;
+}
+
+void lycee::filtergraph::PanelView::render(lycee::graphics::WindowPainter *painter)
 {
 	this->renderJoint(painter);
 	this->renderPanel(painter);
-	return TRUE;
+	return;
 }
 
-lycee::images::Image lycee::Panel::process(const lycee::images::Image &srcimg)
+lycee::images::Image lycee::filtergraph::PanelView::process(const lycee::images::Image &srcimg)
 {
-	return this->processor->invoke(srcimg);
+	return this->panel->processor->invoke(srcimg);
 }
 
-void lycee::Panel::renderJoint(lycee::gdis::WindowPainter * painter)
+bool lycee::filtergraph::PanelView::isAccept(JointType type) const
 {
+	return this->panel->accept[type];
+}
+
+
+void lycee::filtergraph::PanelView::renderJoint(lycee::graphics::WindowPainter * painter)
+{
+	lycee::graphics::SolidBrush face(PanelProfile::JOINT_COLOR_FACE);
+	lycee::graphics::Pen edge(PanelProfile::JOINT_COLOR_EDGE);
+
 	// -------------------------------------------------------------
 	// render joint
-	for (int i = 0; i < JointType::JOINT_MAX; i++) {
-		if (this->accept[i]) {
-			painter->rectangle(
-				lycee::gdis::SolidBrush(PanelProfile::JOINT_COLOR_FACE),
-				lycee::gdis::Pen(PanelProfile::JOINT_COLOR_EDGE),
-				rcJoint[i]
-			);
-		}
+	if (this->isAccept(JointType::INPUT)) {
+		painter->rectangle(face, edge, this->panel->rcJoint[JointType::INPUT]);
+	}
+	if (this->isAccept(JointType::OUTPUT)) {
+		painter->rectangle(face, edge, this->panel->rcJoint[JointType::OUTPUT]);
 	}
 }
 
-void lycee::Panel::renderPanel(lycee::gdis::WindowPainter * painter)
+void lycee::filtergraph::PanelView::renderPanel(lycee::graphics::WindowPainter * painter)
 {
-	lycee::gdis::Pen edgePen(PanelProfile::TEXT_COLOR, 1);
-	lycee::gdis::SolidBrush faceBrush(PanelProfile::BACKGROUND_COLOR);
-	lycee::gdis::Pencil textPencil(PanelProfile::TEXT_COLOR);
-	lycee::gdis::Font textFont;
+	lycee::graphics::Pen edgePen(PanelProfile::TEXT_COLOR, 1);
+	lycee::graphics::SolidBrush faceBrush(PanelProfile::BACKGROUND_COLOR);
+	lycee::graphics::Pencil textPencil(PanelProfile::TEXT_COLOR);
+	lycee::graphics::Font textFont;
 
 	// -------------------------------------------------------------
 	// render title
@@ -110,12 +131,12 @@ void lycee::Panel::renderPanel(lycee::gdis::WindowPainter * painter)
 		.size(PanelProfile::TITLE_TEXT_SIZE)
 		.bold(true);
 
-	painter->rectangle(faceBrush, edgePen, rcTitle);
-	painter->text(textPencil, textFont, this->strType, rcTitle, DT_CENTER);
+	painter->rectangle(faceBrush, edgePen, this->panel->rcTitle);
+	painter->text(textPencil, textFont, this->panel->strType, this->panel->rcTitle, DT_CENTER);
 
 	// -------------------------------------------------------------
 	// render content
-	RECT rc = rcContent;
+	RECT rc = this->panel->rcContent;
 	textFont
 		.size(PanelProfile::CONTENT_TEXT_SIZE)
 		.bold(false);
@@ -123,26 +144,86 @@ void lycee::Panel::renderPanel(lycee::gdis::WindowPainter * painter)
 	painter->rectangle(faceBrush, edgePen, rc);
 
 	InflateRect(&rc, -PanelProfile::CONTENT_TEXT_MARGIN, -PanelProfile::CONTENT_TEXT_MARGIN);
-	painter->text(textPencil, textFont, this->strName, rc, 0L);
+	
+	// TODO: make function for polymorphism
+	painter->text(textPencil, textFont, this->panel->strName, rc, 0L);
 
 }
 
-bool lycee::Panel::getJointPt(JointType type, LPPOINT lpJointPt) const
+std::optional<POINT> lycee::filtergraph::PanelView::getJointPt(lycee::filtergraph::JointType type) const
 {
-	if ( !(type==JointType::INPUT || type==JointType::OUTPUT)
-		|| !this->accept[type]
-		) {
-		return false;
+	std::optional<POINT> result;
+	if (this->isAccept(type)) {
+		long y = this->panel->ptPanel.y + this->panel->szPanel.cy / 2;
+		long x = this->panel->ptPanel.x;
+		if (type == JointType::INPUT) {
+			x -= PanelProfile::JOINT_WIDTH;
+		}
+		else {
+			x += this->panel->szPanel.cx + PanelProfile::JOINT_WIDTH;
+		}
+		result = POINT{ x, y };
+
 	}
-	long y = ptPanel.y + szPanel.cy / 2;
-	long x = ptPanel.x;
-	if (type==JointType::INPUT) {
-		x -= PanelProfile::JOINT_WIDTH;
-	}
-	else {
-		x += szPanel.cx + PanelProfile::JOINT_WIDTH;
-	}
-	lpJointPt->x = x;
-	lpJointPt->y = y;
-	return true;
+	return result;
+}
+
+// ============================================================================================
+// InputPanelView
+// ============================================================================================
+lycee::filtergraph::InputPanelView::~InputPanelView()
+{
+	;
+}
+
+lycee::filtergraph::InputPanelView::InputPanelView(
+	const lycee_string &name,
+	lycee::images::ImageProcessor *processor,
+	const POINT &pos,
+	const SIZE &size)
+	: lycee::filtergraph::PanelView(
+		new lycee::filtergraph::Panel(name, processor, pos, size, false, true)
+	)
+{
+	;
+}
+
+// ============================================================================================
+// FilterPanelView
+// ============================================================================================
+lycee::filtergraph::FilterPanelView::~FilterPanelView()
+{
+	;
+}
+
+lycee::filtergraph::FilterPanelView::FilterPanelView(
+	const lycee_string &name,
+	lycee::images::ImageProcessor *processor,
+	const POINT &pos,
+	const SIZE &size)
+	: lycee::filtergraph::PanelView(
+		new lycee::filtergraph::Panel(name, processor, pos, size, true, true)
+	)
+{
+	;
+}
+
+// ============================================================================================
+// OutputPanelView
+// ============================================================================================
+lycee::filtergraph::OutputPanelView::~OutputPanelView()
+{
+	;
+}
+
+lycee::filtergraph::OutputPanelView::OutputPanelView(
+	const lycee_string &name,
+	lycee::images::ImageProcessor *processor,
+	const POINT &pos,
+	const SIZE &size)
+	: lycee::filtergraph::PanelView(
+		new lycee::filtergraph::Panel(name, processor, pos, size, true, false)
+	)
+{
+	;
 }

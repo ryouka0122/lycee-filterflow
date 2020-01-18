@@ -130,6 +130,7 @@
     <ClInclude Include="filtergraph.h" />
     <ClInclude Include="filtergraph\FilterGraph.h" />
     <ClInclude Include="filtergraph\Panels.h" />
+    <ClInclude Include="filtergraph\PanelViewFactory.h" />
     <ClInclude Include="lycee.h" />
     <ClInclude Include="LyceeFilterFlow.h" />
     <ClInclude Include="lycee\commons.h" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="filtergraph\FilterGraph.cpp" />
     <ClCompile Include="filtergraph\Panels.cpp" />
+    <ClCompile Include="filtergraph\PanelViewFactory.cpp" />
     <ClCompile Include="LyceeFilterFlow.cpp" />
     <ClCompile Include="LyceeFilterFlow_Event.cpp" />
     <ClCompile Include="lycee\commons\Utils.cpp" />

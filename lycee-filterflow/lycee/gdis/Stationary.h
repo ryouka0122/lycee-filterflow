@@ -5,7 +5,7 @@
 
 namespace lycee {
 
-	namespace gdis {
+	namespace graphics {
 
 		// ===========================================================================
 		// GdiTool superclass
