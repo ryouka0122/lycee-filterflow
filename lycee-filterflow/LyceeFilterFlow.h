@@ -31,20 +31,22 @@ namespace lycee {
 
 
 	private:
-		lycee::Panel *input;
-		lycee::Panel *output;
+		std::deque<lycee::filtergraph::PanelViewFactory*> factories;
+		
+		lycee::filtergraph::PanelView *input;
+		lycee::filtergraph::PanelView *output;
 
-		std::deque<lycee::Panel*> filterList;
+		std::deque<lycee::filtergraph::PanelView*> filterList;
 
 		bool isDragging;
 		POINT ptStartMouse;
 		POINT ptStartPanel;
-		lycee::Panel *dragging;
+		lycee::filtergraph::PanelView *dragging;
 
-		typedef std::pair<lycee::Panel*, lycee::Panel*> JointFlow;
+		typedef std::pair<lycee::filtergraph::PanelView*, lycee::filtergraph::PanelView*> JointFlow;
 		std::list<JointFlow> jointList;
 
-		BOOL renderEdge(lycee::gdis::WindowPainter *painter);
+		BOOL renderEdge(lycee::graphics::WindowPainter *painter);
 
 	private:
 		lycee::widgets::FileSelectDialog fileSelectDialog;
