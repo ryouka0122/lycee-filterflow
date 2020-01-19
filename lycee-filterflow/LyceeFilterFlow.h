@@ -19,6 +19,7 @@ namespace lycee {
 	// dispatch event
 	protected:
 		virtual LRESULT doCreate(lycee::widgets::EventInfo info);
+		virtual LRESULT doClose(lycee::widgets::EventInfo info);
 		virtual LRESULT doDestroy(lycee::widgets::EventInfo info);
 		virtual LRESULT doPaint(lycee::widgets::EventInfo info);
 		
@@ -60,7 +61,7 @@ namespace lycee {
 	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 	// Context Menu Event
 	public:
-		virtual LRESULT doRButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+		virtual LRESULT doRButtonDown(lycee::widgets::EventInfo info);
 
 	private:
 		lycee::widgets::PopupMenu *popupMenu;

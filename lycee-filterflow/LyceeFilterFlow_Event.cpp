@@ -7,6 +7,8 @@ void lycee::LyceeFilterFlow::setupEvent()
 #define CALL_EVENT(e) [&](lycee::widgets::EventInfo i) {return e(i); }
 
 	this->eventHandler.entryEvent(WM_DESTROY, CALL_EVENT(this->doDestroy));
+	this->eventHandler.entryEvent(WM_CLOSE, CALL_EVENT(this->doClose));
+
 	this->eventHandler.entryEvent(WM_CREATE, CALL_EVENT(this->doCreate));
 	this->eventHandler.entryEvent(WM_PAINT, CALL_EVENT(this->doPaint));
 
@@ -15,10 +17,18 @@ void lycee::LyceeFilterFlow::setupEvent()
 	this->eventHandler.entryEvent(WM_MOUSEMOVE, CALL_EVENT(this->doMouseMove));
 	this->eventHandler.entryEvent(WM_LBUTTONDOWN, CALL_EVENT(this->doLButtonDown));
 	this->eventHandler.entryEvent(WM_LBUTTONUP, CALL_EVENT(this->doLButtonUp));
+	this->eventHandler.entryEvent(WM_RBUTTONDOWN, CALL_EVENT(this->doRButtonDown));
 
 #undef CALL_EVENT
 }
 
+LRESULT lycee::LyceeFilterFlow::doClose(lycee::widgets::EventInfo info)
+{
+	if (IDOK != lycee::widgets::MessageDialog::confirm(info.hWnd, TEXT("終了しますか？"))) {
+		return 0L;
+	}
+	return info.callDefault();
+}
 
 LRESULT lycee::LyceeFilterFlow::doDestroy(lycee::widgets::EventInfo info)
 {
@@ -120,9 +130,7 @@ LRESULT lycee::LyceeFilterFlow::doCommand(lycee::widgets::EventInfo info)
 		saveDialog();
 		return 0L;
 	case ID_FILE_QUIT:
-		if(IDOK == lycee::widgets::MessageDialog::confirm(info.hWnd, TEXT("終了しますか？"))) {
-			DestroyWindow(info.hWnd);
-		}
+		info.send(WM_CLOSE);
 		return 0L;
 
 	case ID_ADDPANEL_FILTER:

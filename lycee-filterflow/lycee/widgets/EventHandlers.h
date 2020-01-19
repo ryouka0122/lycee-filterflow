@@ -14,7 +14,7 @@ namespace lycee {
 			WPARAM wParam;
 			LPARAM lParam;
 
-			virtual LRESULT dispatch() {
+			virtual LRESULT callDefault() {
 				return DefWindowProc(hWnd, uMsg, wParam, lParam);
 			}
 
@@ -28,6 +28,14 @@ namespace lycee {
 
 			void quit(int nExitCode = 0) {
 				PostQuitMessage(nExitCode);
+			}
+
+			LRESULT send(UINT uMsg, WPARAM wp = 0U, LPARAM lp = 0L) {
+				return SendMessage(hWnd, uMsg, wp, lp);
+			}
+
+			BOOL post(UINT uMsg, WPARAM wp = 0U, LPARAM lp = 0L) {
+				return PostMessage(hWnd, uMsg, wp, lp);
 			}
 		};
 
