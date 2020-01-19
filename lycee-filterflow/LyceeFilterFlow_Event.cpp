@@ -2,31 +2,35 @@
 
 #include "resource.h"
 
-
-LRESULT lycee::LyceeFilterFlow::dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+void lycee::LyceeFilterFlow::setupEvent()
 {
-	switch (uMsg) {
-	case WM_CREATE:
-		return this->doCreate(hWnd, uMsg, wp, lp);
-	case WM_PAINT:
-		return this->doPaint(hWnd, uMsg, wp, lp);
-	case WM_COMMAND:
-		return this->doCommand(hWnd, uMsg, wp, lp);
-	case WM_DESTROY:
-		return this->doDestroy(hWnd, uMsg, wp, lp);
-	case WM_MOUSEMOVE:
-		return this->doMouseMove(hWnd, uMsg, wp, lp);
-	case WM_LBUTTONDOWN:
-		return this->doLButtonDown(hWnd, uMsg, wp, lp);
-	case WM_LBUTTONUP:
-		return this->doLButtonUp(hWnd, uMsg, wp, lp);
-	case WM_RBUTTONDOWN:
-		return this->doRButtonDown(hWnd, uMsg, wp, lp);
-	}
-	return DefWindowProc(hWnd, uMsg, wp, lp);
+#define CALL_EVENT(e) [&](lycee::widgets::EventInfo i) {return e(i); }
+
+	this->eventHandler.entryEvent(WM_DESTROY, CALL_EVENT(this->doDestroy));
+	this->eventHandler.entryEvent(WM_CLOSE, CALL_EVENT(this->doClose));
+
+	this->eventHandler.entryEvent(WM_CREATE, CALL_EVENT(this->doCreate));
+	this->eventHandler.entryEvent(WM_PAINT, CALL_EVENT(this->doPaint));
+
+	this->eventHandler.entryEvent(WM_COMMAND, CALL_EVENT(this->doCommand));
+
+	this->eventHandler.entryEvent(WM_MOUSEMOVE, CALL_EVENT(this->doMouseMove));
+	this->eventHandler.entryEvent(WM_LBUTTONDOWN, CALL_EVENT(this->doLButtonDown));
+	this->eventHandler.entryEvent(WM_LBUTTONUP, CALL_EVENT(this->doLButtonUp));
+	this->eventHandler.entryEvent(WM_RBUTTONDOWN, CALL_EVENT(this->doRButtonDown));
+
+#undef CALL_EVENT
 }
 
-LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doClose(lycee::widgets::EventInfo info)
+{
+	if (IDOK != lycee::widgets::MessageDialog::confirm(info.hWnd, TEXT("終了しますか？"))) {
+		return 0L;
+	}
+	return info.callDefault();
+}
+
+LRESULT lycee::LyceeFilterFlow::doDestroy(lycee::widgets::EventInfo info)
 {
 	delete input;
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
@@ -40,10 +44,11 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 	factories.clear();
 
 	delete popupMenu;
+	info.quit();
 	return 0L;
 }
 
-LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doCreate(lycee::widgets::EventInfo info)
 {
 	factories.push_back(new lycee::filtergraph::InputPanelViewFactory(TEXT("Input[%03d]")));
 	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory(TEXT("Output[%03d]")));
@@ -78,9 +83,9 @@ LRESULT lycee::LyceeFilterFlow::doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM
 	return 0L;
 }
 
-LRESULT lycee::LyceeFilterFlow::doPaint(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doPaint(lycee::widgets::EventInfo info)
 {
-	lycee::graphics::WindowPainter painter(hWnd);
+	lycee::graphics::WindowPainter painter(info.hWnd);
 
 	input->render(&painter);
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
@@ -107,11 +112,11 @@ void lycee::LyceeFilterFlow::saveDialog()
 	}
 }
 
-LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doCommand(lycee::widgets::EventInfo info)
 {
 	lycee_string msg;
 
-	switch (LOWORD(wp)) {
+	switch (LOWORD(info.wParam)) {
 	case ID_FILE_NEW:
 		msg = TEXT("[File]>[NEW]");
 		break;
@@ -125,9 +130,7 @@ LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 		saveDialog();
 		return 0L;
 	case ID_FILE_QUIT:
-		if(IDOK == lycee::widgets::MessageDialog::confirm(hWnd, TEXT("終了しますか？"))) {
-			DestroyWindow(hWnd);
-		}
+		info.send(WM_CLOSE);
 		return 0L;
 
 	case ID_ADDPANEL_FILTER:
@@ -146,15 +149,15 @@ LRESULT lycee::LyceeFilterFlow::doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARA
 	}
 
 	if (!msg.empty()) {
-		MessageBox(hWnd, msg.c_str(), TEXT("確認"), MB_OK);
+		lycee::widgets::MessageDialog::info(info.hWnd, msg);
 	}
 	return 0L;
 }
 
-LRESULT lycee::LyceeFilterFlow::doLButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doLButtonDown(lycee::widgets::EventInfo info)
 {
-	long x = LOWORD(lp);
-	long y = HIWORD(lp);
+	long x = LOWORD(info.lParam);
+	long y = HIWORD(info.lParam);
 	
 	this->dragging = NULL;
 	this->isDragging = false;
@@ -187,14 +190,14 @@ LRESULT lycee::LyceeFilterFlow::doLButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, L
 	return 0L;
 }
 
-LRESULT lycee::LyceeFilterFlow::doMouseMove(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doMouseMove(lycee::widgets::EventInfo info)
 {
 	if (!this->isDragging) {
 		return 0L;
 	}
 
-	long x = LOWORD(lp);
-	long y = HIWORD(lp);
+	long x = LOWORD(info.lParam);
+	long y = HIWORD(info.lParam);
 
 	long dx = x - this->ptStartMouse.x;
 	long dy = y - this->ptStartMouse.y;
@@ -204,12 +207,12 @@ LRESULT lycee::LyceeFilterFlow::doMouseMove(HWND hWnd, UINT uMsg, WPARAM wp, LPA
 
 	this->dragging->moveTo(newX, newY);
 
-	InvalidateRect(hWnd, NULL, TRUE);
-
+	info.invalidate(true);
+	
 	return 0L;
 }
 
-LRESULT lycee::LyceeFilterFlow::doLButtonUp(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doLButtonUp(lycee::widgets::EventInfo info)
 {
 	this->dragging = NULL;
 	this->isDragging = false;

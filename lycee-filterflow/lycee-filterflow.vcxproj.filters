@@ -110,6 +110,9 @@
     <ClInclude Include="lycee\images.h">
       <Filter>ヘッダー ファイル\images</Filter>
     </ClInclude>
+    <ClInclude Include="lycee\widgets\EventHandlers.h">
+      <Filter>ヘッダー ファイル\widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LyceeFilterFlow.cpp">
@@ -159,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="lycee\images\ImageProcessor.cpp">
       <Filter>ソース ファイル\images</Filter>
+    </ClCompile>
+    <ClCompile Include="lycee\widgets\EventHandlers.cpp">
+      <Filter>ソース ファイル\widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

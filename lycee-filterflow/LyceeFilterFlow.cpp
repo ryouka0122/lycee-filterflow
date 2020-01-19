@@ -11,7 +11,8 @@ lycee::LyceeFilterFlow::LyceeFilterFlow(HINSTANCE hInstance)
 	: lycee::widgets::Application(hInstance),
 	input(NULL),
 	output(NULL),
-	filterList()
+	filterList(),
+	eventHandler(DefWindowProc)
 {
 }
 
@@ -25,6 +26,10 @@ BOOL lycee::LyceeFilterFlow::start(const lycee_string &title, int width, int hei
 	) {
 		return FALSE;
 	}
+	
+	setupEvent();
+	entryEventHandler(&eventHandler);
+
 	return this->run(title, width, height, nCmdShow);
 }
 

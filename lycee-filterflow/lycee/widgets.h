@@ -7,5 +7,6 @@
 
 #include "widgets\Menus.h"
 
+#include "widgets\EventHandlers.h"
 
 #endif	// __LYCEE__WIDGETS__HEADER__

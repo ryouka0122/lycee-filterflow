@@ -2,8 +2,8 @@
 
 
 
-LRESULT lycee::LyceeFilterFlow::doRButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+LRESULT lycee::LyceeFilterFlow::doRButtonDown(lycee::widgets::EventInfo info)
 {
-	popupMenu->show(hWnd, POINT{LOWORD(lp), HIWORD(lp)});
+	popupMenu->show(info.hWnd, POINT{LOWORD(info.lParam), HIWORD(info.lParam)});
 	return 0L;
 }

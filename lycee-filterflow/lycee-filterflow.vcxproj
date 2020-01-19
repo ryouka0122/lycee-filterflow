@@ -145,6 +145,7 @@
     <ClInclude Include="lycee\widgets.h" />
     <ClInclude Include="lycee\widgets\Application.h" />
     <ClInclude Include="lycee\widgets\Dialog.h" />
+    <ClInclude Include="lycee\widgets\EventHandlers.h" />
     <ClInclude Include="lycee\widgets\Menus.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClCompile Include="lycee\images\ImageProcessor.cpp" />
     <ClCompile Include="lycee\widgets\Application.cpp" />
     <ClCompile Include="lycee\widgets\Dialog.cpp" />
+    <ClCompile Include="lycee\widgets\EventHandlers.cpp" />
     <ClCompile Include="lycee\widgets\MainEventController.cpp" />
     <ClCompile Include="lycee\widgets\Menus.cpp" />
     <ClCompile Include="Program.cpp" />
