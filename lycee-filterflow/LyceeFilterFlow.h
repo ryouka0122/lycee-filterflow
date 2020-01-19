@@ -35,21 +35,17 @@ namespace lycee {
 		void setupEvent();
 
 	private:
-		std::deque<lycee::filtergraph::PanelViewFactory*> factories;
+		typedef std::pair<lycee::filtergraph::PanelView*, lycee::filtergraph::PanelView*> JointFlow;
 		
-		lycee::filtergraph::PanelView *input;
-		lycee::filtergraph::PanelView *output;
-
+		std::deque<lycee::filtergraph::PanelViewFactory*> factories;
 		std::deque<lycee::filtergraph::PanelView*> filterList;
+		std::deque<JointFlow> jointList;
 
 		bool isDragging;
 		POINT ptStartMouse;
 		POINT ptStartPanel;
 		lycee::filtergraph::PanelView *dragging;
-
-		typedef std::pair<lycee::filtergraph::PanelView*, lycee::filtergraph::PanelView*> JointFlow;
-		std::list<JointFlow> jointList;
-
+		
 		BOOL renderEdge(lycee::graphics::WindowPainter *painter);
 
 	private:

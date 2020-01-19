@@ -32,11 +32,9 @@ LRESULT lycee::LyceeFilterFlow::doClose(lycee::widgets::EventInfo info)
 
 LRESULT lycee::LyceeFilterFlow::doDestroy(lycee::widgets::EventInfo info)
 {
-	delete input;
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
 		delete *iter;
 	}
-	delete output;
 
 	for (auto iter = factories.begin(); iter != factories.end(); iter++) {
 		delete (*iter);
@@ -50,23 +48,9 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(lycee::widgets::EventInfo info)
 
 LRESULT lycee::LyceeFilterFlow::doCreate(lycee::widgets::EventInfo info)
 {
-	factories.push_back(new lycee::filtergraph::InputPanelViewFactory(TEXT("Input[%03d]")));
-	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory(TEXT("Output[%03d]")));
-	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory(TEXT("Filter[%03d]")));
-
-	input = factories[0]->create(POINT{ 100, 100 }, lycee::images::ImageProcessor::getDefault());
-	output = factories[1]->create(POINT{ 550, 300 }, lycee::images::ImageProcessor::getDefault());
-	filterList.push_back(
-		factories[2]->create(POINT{ 350, 100 }, lycee::images::ImageProcessor::getDefault()));
-	filterList.push_back(
-		factories[2]->create(POINT{ 700, 100 }, lycee::images::ImageProcessor::getDefault()));
-	filterList.push_back(
-		factories[2]->create(POINT{ 300, 300 }, lycee::images::ImageProcessor::getDefault()));
-
-	jointList.push_back(std::make_pair(input, filterList[0]));
-	jointList.push_back(std::make_pair(filterList[0], filterList[1]));
-	jointList.push_back(std::make_pair(input, filterList[2]));
-	jointList.push_back(std::make_pair(filterList[2], output));
+	factories.push_back(new lycee::filtergraph::InputPanelViewFactory());
+	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory());
+	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory());
 
 	fileSelectDialog
 		.title(TEXT("ファイルを選んで"))
@@ -77,7 +61,6 @@ LRESULT lycee::LyceeFilterFlow::doCreate(lycee::widgets::EventInfo info)
 		.filter(TEXT("gif"), TEXT("GIF Image"))
 		.filter(TEXT("*"), TEXT("All Files"));
 
-
 	popupMenu = lycee::widgets::PopupMenu::fromResource(this->getHINSTANCE(), IDR_MENU1);
 
 	return 0L;
@@ -87,12 +70,9 @@ LRESULT lycee::LyceeFilterFlow::doPaint(lycee::widgets::EventInfo info)
 {
 	lycee::graphics::WindowPainter painter(info.hWnd);
 
-	input->render(&painter);
 	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
 		(*iter)->render(&painter);
 	}
-	output->render(&painter);
-
 	renderEdge(&painter);
 	return 0L;
 }
@@ -162,21 +142,7 @@ LRESULT lycee::LyceeFilterFlow::doLButtonDown(lycee::widgets::EventInfo info)
 	this->dragging = NULL;
 	this->isDragging = false;
 
-	if (input->hittest(x, y)) {
-		this->isDragging = true;
-		this->dragging = input;
-		this->ptStartMouse.x = x;
-		this->ptStartMouse.y = y;
-		this->ptStartPanel = input->getPosition();
-	}
-	else if (output->hittest(x, y)) {
-		this->isDragging = true;
-		this->dragging = output;
-		this->ptStartMouse.x = x;
-		this->ptStartMouse.y = y;
-		this->ptStartPanel = output->getPosition();
-	}
-	else for (auto iter = filterList.begin(); iter != filterList.end(); iter++) {
+	for (auto iter = filterList.begin(); iter != filterList.end(); iter++) {
 		auto panel = *iter;
 		if (panel->hittest(x, y)) {
 			this->isDragging = true;

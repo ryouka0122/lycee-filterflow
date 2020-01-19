@@ -33,7 +33,7 @@ namespace lycee {
 		class InputPanelViewFactory : virtual public AbstractPanelViewFactory {
 		public:
 			virtual ~InputPanelViewFactory();
-			explicit InputPanelViewFactory(const lycee_string &nameTemplate);
+			explicit InputPanelViewFactory();
 
 			virtual PanelView *create(const POINT &pos, lycee::images::ImageProcessor *processor);
 
@@ -43,7 +43,7 @@ namespace lycee {
 		class FilterPanelViewFactory : virtual public AbstractPanelViewFactory {
 		public:
 			virtual ~FilterPanelViewFactory();
-			explicit FilterPanelViewFactory(const lycee_string &nameTemplate);
+			explicit FilterPanelViewFactory();
 
 			virtual PanelView *create(const POINT &pos, lycee::images::ImageProcessor *processor);
 
@@ -53,7 +53,7 @@ namespace lycee {
 		class OutputPanelViewFactory : virtual public AbstractPanelViewFactory {
 		public:
 			virtual ~OutputPanelViewFactory();
-			explicit OutputPanelViewFactory(const lycee_string &nameTemplate);
+			explicit OutputPanelViewFactory();
 
 			virtual PanelView *create(const POINT &pos, lycee::images::ImageProcessor *processor);
 

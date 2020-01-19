@@ -9,8 +9,6 @@ lycee::LyceeFilterFlow::~LyceeFilterFlow()
 
 lycee::LyceeFilterFlow::LyceeFilterFlow(HINSTANCE hInstance)
 	: lycee::widgets::Application(hInstance),
-	input(NULL),
-	output(NULL),
 	filterList(),
 	eventHandler(DefWindowProc)
 {
