@@ -1,9 +1,27 @@
 #include "Application.h"
 
 
-std::map<HWND, lycee::widgets::Application*> lycee::widgets::Application::applicationList;
+lycee::widgets::MainEventController::~MainEventController()
+{
+}
 
-LRESULT CALLBACK lycee::widgets::Application::MainEventController(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+lycee::widgets::MainEventController::MainEventController()
+{
+}
+
+lycee::widgets::MainEventController::MainEventController(const MainEventController &)
+{
+}
+
+lycee::widgets::MainEventController& lycee::widgets::MainEventController::operator =(const MainEventController &)
+{
+	return *this;
+}
+
+
+std::map<HWND, lycee::widgets::Application*> lycee::widgets::MainEventController::applicationList;
+
+LRESULT CALLBACK lycee::widgets::MainEventController::GlobalWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
 	if (uMsg == WM_CREATE) {
 		LPCREATESTRUCT lpcs = (LPCREATESTRUCT)lp;
@@ -22,9 +40,6 @@ LRESULT CALLBACK lycee::widgets::Application::MainEventController(HWND hWnd, UIN
 
 	if (uMsg == WM_DESTROY) {
 		applicationList.erase(iter);
-		if (applicationList.size() == 0) {
-			PostQuitMessage(0);
-		}
 	}
 
 	return lRes;

@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "EventHandlers.h"
+
 
 lycee::widgets::Application::~Application()
 {
@@ -9,7 +11,8 @@ lycee::widgets::Application::~Application()
 lycee::widgets::Application::Application(HINSTANCE hInstance)
 	: atom(INVALID_ATOM),
 	hInstance(hInstance),
-	hWnd(NULL)
+	hWnd(NULL),
+	eventHandler(NULL)
 {
 	;
 }
@@ -32,7 +35,7 @@ BOOL lycee::widgets::Application::initialize(LPCTSTR lpszClassName, LPCTSTR lpsz
 	wcex.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 	wcex.hInstance = hInstance;
 
-	wcex.lpfnWndProc = MainEventController;
+	wcex.lpfnWndProc = MainEventController::GlobalWndProc;
 	wcex.lpszClassName = lpszClassName;
 	wcex.lpszMenuName = lpszMenuName;
 	wcex.style = style;
@@ -86,6 +89,23 @@ void lycee::widgets::Application::release()
 	UnregisterClass(MAKEINTATOM(this->atom), this->hInstance);
 	this->atom = INVALID_ATOM;
 }
+
+
+LRESULT lycee::widgets::Application::dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
+{
+	if (eventHandler) {
+		auto result = eventHandler->dispatch(hWnd, uMsg, wp, lp);
+		return trif(result.has_value(), result.value(), 0L);
+	}
+	return DefWindowProc(hWnd, uMsg, wp, lp);
+
+}
+
+void lycee::widgets::Application::entryEventHandler(lycee::widgets::EventHandler *handler)
+{
+	this->eventHandler = handler;
+}
+
 
 
 RECT lycee::widgets::Application::adjustWindowRect(int width, int height, DWORD dwStyle, BOOL bMenu)

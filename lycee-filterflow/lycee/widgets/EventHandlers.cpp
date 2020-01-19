@@ -15,8 +15,9 @@ lycee::widgets::CommonEventHandler::~CommonEventHandler()
 {
 }
 
-lycee::widgets::CommonEventHandler::CommonEventHandler()
-	: eventList()
+lycee::widgets::CommonEventHandler::CommonEventHandler(default_callback _default)
+	: defaultCallback(_default),
+	eventList()
 {
 }
 
@@ -30,6 +31,9 @@ std::optional<LRESULT> lycee::widgets::CommonEventHandler::dispatch(HWND hWnd, U
 			result = iter->second(info);
 		}
 		hookAfterInvoke(&info);
+	}
+	else {
+		result = this->defaultCallback(hWnd, uMsg, wp, lp);
 	}
 	return result;
 }

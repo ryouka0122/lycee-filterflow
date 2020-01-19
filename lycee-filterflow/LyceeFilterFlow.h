@@ -15,19 +15,23 @@ namespace lycee {
 
 		BOOL start(const lycee_string &title, int width, int height, int nCmdShow);
 
-
+	// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+	// dispatch event
 	protected:
-		virtual LRESULT dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
-
-		virtual LRESULT doCreate(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
-		virtual LRESULT doDestroy(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
-		virtual LRESULT doPaint(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+		virtual LRESULT doCreate(lycee::widgets::EventInfo info);
+		virtual LRESULT doDestroy(lycee::widgets::EventInfo info);
+		virtual LRESULT doPaint(lycee::widgets::EventInfo info);
 		
-		virtual LRESULT doCommand(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+		virtual LRESULT doCommand(lycee::widgets::EventInfo info);
 
-		virtual LRESULT doLButtonDown(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
-		virtual LRESULT doMouseMove(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
-		virtual LRESULT doLButtonUp(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+		virtual LRESULT doLButtonDown(lycee::widgets::EventInfo info);
+		virtual LRESULT doMouseMove(lycee::widgets::EventInfo info);
+		virtual LRESULT doLButtonUp(lycee::widgets::EventInfo info);
+
+	private:
+		lycee::widgets::CommonEventHandler eventHandler;
+
+		void setupEvent();
 
 	private:
 		std::deque<lycee::filtergraph::PanelViewFactory*> factories;

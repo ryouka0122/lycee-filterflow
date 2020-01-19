@@ -8,10 +8,20 @@ namespace lycee {
 
 	namespace widgets {
 
+		class EventHandler;
+
 		class Application {
+		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+		// constructor/destructor
+		// 
 		public:
 			virtual ~Application();
 			explicit Application(HINSTANCE hInstance);
+
+		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+		// Application controller
+		//
+		public:
 
 			BOOL initialize(LPCTSTR lpszClassName, LPCTSTR lpszMenuName, UINT style);
 
@@ -27,9 +37,6 @@ namespace lycee {
 				return this->hInstance;
 			}
 
-		protected:
-			virtual LRESULT dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp) = 0;
-
 		private:
 			ATOM atom;
 			HINSTANCE hInstance;
@@ -38,14 +45,38 @@ namespace lycee {
 
 			RECT adjustWindowRect(int width, int height, DWORD dwStyle, BOOL bMenu);
 
+
+		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+		// event dispatcher
+		//
+		public:
+			void entryEventHandler(EventHandler *handler);
+
+			virtual LRESULT dispatchEvent(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+
 		private:
+			EventHandler *eventHandler;
+
+		};
+
+		// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+		// [MAIN EVENT CONTROLLER]
+		//
+		class MainEventController {
+			friend class Application;
+
+		private:
+			~MainEventController();
+			MainEventController();
+			MainEventController(const MainEventController &);
+			MainEventController& operator =(const MainEventController &);
+
 			typedef std::map<HWND, Application*> application_map;
 			typedef typename application_map::iterator map_iterator;
 
 			static std::map<HWND, Application*> applicationList;
-			static LRESULT CALLBACK MainEventController(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
+			static LRESULT CALLBACK GlobalWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
 		};
-
 
 	}	// widgets
 
