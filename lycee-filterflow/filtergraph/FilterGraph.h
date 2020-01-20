@@ -51,6 +51,16 @@ namespace lycee {
 
 			int hittest(int x, int y);
 
+			int hittest(const POINT &pt)
+			{
+				return hittest(pt.x, pt.y);
+			}
+
+			PanelView* operator [](int index)
+			{
+				return panelViewList[index];
+			}
+
 		private:
 			PanelViewFactory *inputFactory;
 			PanelViewFactory *outputFactory;

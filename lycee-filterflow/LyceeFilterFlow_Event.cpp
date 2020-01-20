@@ -32,15 +32,6 @@ LRESULT lycee::LyceeFilterFlow::doClose(lycee::widgets::EventInfo info)
 
 LRESULT lycee::LyceeFilterFlow::doDestroy(lycee::widgets::EventInfo info)
 {
-	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
-		delete *iter;
-	}
-
-	for (auto iter = factories.begin(); iter != factories.end(); iter++) {
-		delete (*iter);
-	}
-	factories.clear();
-
 	delete popupMenu;
 	info.quit();
 	return 0L;
@@ -48,10 +39,6 @@ LRESULT lycee::LyceeFilterFlow::doDestroy(lycee::widgets::EventInfo info)
 
 LRESULT lycee::LyceeFilterFlow::doCreate(lycee::widgets::EventInfo info)
 {
-	factories.push_back(new lycee::filtergraph::InputPanelViewFactory());
-	factories.push_back(new lycee::filtergraph::OutputPanelViewFactory());
-	factories.push_back(new lycee::filtergraph::FilterPanelViewFactory());
-
 	fileSelectDialog
 		.title(TEXT("ファイルを選んで"))
 		.filter(TEXT("txt"), TEXT("Text File"))
@@ -69,18 +56,13 @@ LRESULT lycee::LyceeFilterFlow::doCreate(lycee::widgets::EventInfo info)
 LRESULT lycee::LyceeFilterFlow::doPaint(lycee::widgets::EventInfo info)
 {
 	lycee::graphics::WindowPainter painter(info.hWnd);
-
-	for (auto iter = this->filterList.begin(); iter != this->filterList.end(); iter++) {
-		(*iter)->render(&painter);
-	}
-	renderEdge(&painter);
+	graph.render(&painter);
 	return 0L;
 }
 
 void lycee::LyceeFilterFlow::openDialog()
 {
-	auto result = fileSelectDialog.showLoadDialog(getHWND());
-	if (result) {
+	if (auto result = fileSelectDialog.showLoadDialog(getHWND())) {
 		lycee::widgets::MessageDialog::info(getHWND(), result.value());
 	}
 }
@@ -88,7 +70,7 @@ void lycee::LyceeFilterFlow::openDialog()
 void lycee::LyceeFilterFlow::saveDialog()
 {
 	if (auto result = fileSelectDialog.showSaveDialog(getHWND())) {
-		MessageBox(getHWND(), result.value().c_str(), TEXT("RESULT"), MB_OK);
+		lycee::widgets::MessageDialog::info(getHWND(), result.value());
 	}
 }
 
@@ -114,16 +96,21 @@ LRESULT lycee::LyceeFilterFlow::doCommand(lycee::widgets::EventInfo info)
 		return 0L;
 
 	case ID_ADDPANEL_FILTER:
-		msg = TEXT("[Add Panel]>[Filter]");
-		break;
+		graph.addFilter(ptBtnRight.x, ptBtnRight.y);
+		info.invalidate(TRUE);
+		return 0L;
 	case ID_ADDPANEL_INPUT:
-		msg = TEXT("[Add Panel]>[Input]");
+		graph.addInput(ptBtnRight.x, ptBtnRight.y);
+		info.invalidate(TRUE);
 		break;
 	case ID_ADDPANEL_OUTPUT:
-		msg = TEXT("[Add Panel]>[Output]");
+		graph.addOutput(ptBtnRight.x, ptBtnRight.y);
+		info.invalidate(TRUE);
 		break;
 	case ID__DELETEPANEL:
-		msg = TEXT("[Delete Panel]");
+		graph.removePanelView(targetDeleteId);
+		targetDeleteId = -1;
+		info.invalidate(TRUE);
 		break;
 
 	}
@@ -138,20 +125,12 @@ LRESULT lycee::LyceeFilterFlow::doLButtonDown(lycee::widgets::EventInfo info)
 {
 	long x = LOWORD(info.lParam);
 	long y = HIWORD(info.lParam);
-	
-	this->dragging = NULL;
-	this->isDragging = false;
 
-	for (auto iter = filterList.begin(); iter != filterList.end(); iter++) {
-		auto panel = *iter;
-		if (panel->hittest(x, y)) {
-			this->isDragging = true;
-			this->dragging = panel;
-			this->ptStartMouse.x = x;
-			this->ptStartMouse.y = y;
-			this->ptStartPanel = panel->getPosition();
-			break;
-		}
+	this->draggingId = graph.hittest(x, y);
+	if (this->isDragging = (this->draggingId != -1)) {
+		this->ptStartMouse.x = x;
+		this->ptStartMouse.y = y;
+		this->ptStartPanel = graph[this->draggingId]->getPosition();
 	}
 	return 0L;
 }
@@ -171,7 +150,7 @@ LRESULT lycee::LyceeFilterFlow::doMouseMove(lycee::widgets::EventInfo info)
 	long newX = this->ptStartPanel.x + dx;
 	long newY = this->ptStartPanel.y + dy;
 
-	this->dragging->moveTo(newX, newY);
+	graph[this->draggingId]->moveTo(newX, newY);
 
 	info.invalidate(true);
 	
@@ -180,7 +159,7 @@ LRESULT lycee::LyceeFilterFlow::doMouseMove(lycee::widgets::EventInfo info)
 
 LRESULT lycee::LyceeFilterFlow::doLButtonUp(lycee::widgets::EventInfo info)
 {
-	this->dragging = NULL;
+	this->draggingId = -1;
 	this->isDragging = false;
 
 	return 0L;
