@@ -35,23 +35,13 @@ namespace lycee {
 		void setupEvent();
 
 	private:
-		std::deque<lycee::filtergraph::PanelViewFactory*> factories;
-		
-		lycee::filtergraph::PanelView *input;
-		lycee::filtergraph::PanelView *output;
-
-		std::deque<lycee::filtergraph::PanelView*> filterList;
+		lycee::filtergraph::FilterGraph graph;
 
 		bool isDragging;
 		POINT ptStartMouse;
 		POINT ptStartPanel;
-		lycee::filtergraph::PanelView *dragging;
-
-		typedef std::pair<lycee::filtergraph::PanelView*, lycee::filtergraph::PanelView*> JointFlow;
-		std::list<JointFlow> jointList;
-
-		BOOL renderEdge(lycee::graphics::WindowPainter *painter);
-
+		int draggingId;
+		
 	private:
 		lycee::widgets::FileSelectDialog fileSelectDialog;
 
@@ -66,6 +56,10 @@ namespace lycee {
 	private:
 		lycee::widgets::PopupMenu *popupMenu;
 		POINT ptBtnRight;
+		int targetDeleteId;
+
+		void setupPopupMenu();
+
 
 	};
 

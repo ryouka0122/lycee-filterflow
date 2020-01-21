@@ -4,46 +4,75 @@
 #include "..\lycee.h"
 
 #include "Panels.h"
+#include "PanelViewFactory.h"
+
 
 namespace lycee {
 
 	namespace filtergraph {
 
 
-		struct Edge {
-			typedef typename std::list<Panel*>::size_type size_type;
-
-			size_type begin;
-			size_type end;
+		struct Connector {
+			int fromId;
+			int toId;
 		};
 
 
 		class FilterGraph {
 		public:
-			typedef typename std::list<Panel*>::size_type panel_size_type;
-			typedef typename std::list<Edge>::size_type edge_size_type;
-
 			virtual ~FilterGraph();
-			explicit FilterGraph(HWND hWnd);
-
-		private:
-			HWND hWnd;
+			FilterGraph();
 
 		public:
-			void insertPanel(Panel *panel);
-			void joinPanel(panel_size_type begin, panel_size_type end);
+			void addInput(int x, int y)
+			{
+				add(x, y, inputFactory);
+			}
 
-			void render(HDC hdc);
+			void addOutput(int x, int y)
+			{
+				add(x, y, outputFactory);
+			}
 
+			void addFilter(int x, int y)
+			{
+				add(x, y, filterFactory);
+			}
 
+			void removePanelView(int id);
+
+			void removeAllPanelView();
+
+			void connect(int from, int to);
+			void disconnect(int from, int to);
+			bool canConnect(int from, int to);
+
+			void render(lycee::graphics::WindowPainter* painter);
+
+			int hittest(int x, int y);
+
+			int hittest(const POINT &pt)
+			{
+				return hittest(pt.x, pt.y);
+			}
+
+			PanelView* operator [](int index)
+			{
+				return panelViewList[index];
+			}
 
 		private:
-			std::list<Panel*> panelList;
-			std::list<Edge> edgeList;
+			PanelViewFactory *inputFactory;
+			PanelViewFactory *outputFactory;
+			PanelViewFactory *filterFactory;
 
-			void renderPanel(lycee::graphics::WindowPainter* painter, Panel *panel);
+			std::deque<PanelView*> panelViewList;
+			std::deque<Connector> connectorList;
 
-			void renderEdge(lycee::graphics::WindowPainter* painter, Edge *edge);
+			void add(int x, int y, PanelViewFactory* factory);
+
+			void renderPanel(lycee::graphics::WindowPainter* painter);
+			void renderConnector(lycee::graphics::WindowPainter* painter);
 
 		};
 

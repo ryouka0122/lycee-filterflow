@@ -26,6 +26,19 @@ namespace lycee {
 			
 			BOOL show(HWND hWnd, const POINT &ptClient, UINT uFlags);
 
+			PopupMenu& enable(UINT menuId)
+			{
+				return state(menuId, true);
+			}
+
+			PopupMenu& disable(UINT menuId)
+			{
+				return state(menuId, false);
+			}
+			
+			PopupMenu& state(UINT menuId, bool bState);
+
+
 		private:
 			HMENU hContextMenu;
 			

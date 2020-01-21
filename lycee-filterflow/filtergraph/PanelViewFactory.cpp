@@ -39,8 +39,8 @@ lycee::filtergraph::InputPanelViewFactory::~InputPanelViewFactory()
 	;
 }
 
-lycee::filtergraph::InputPanelViewFactory::InputPanelViewFactory(const lycee_string &nameTemplate)
-	: lycee::filtergraph::AbstractPanelViewFactory(nameTemplate)
+lycee::filtergraph::InputPanelViewFactory::InputPanelViewFactory()
+	: lycee::filtergraph::AbstractPanelViewFactory(TEXT("INPUT[%03d]"))
 {
 	;
 }
@@ -66,8 +66,8 @@ lycee::filtergraph::FilterPanelViewFactory::~FilterPanelViewFactory()
 }
 
 
-lycee::filtergraph::FilterPanelViewFactory::FilterPanelViewFactory(const lycee_string &nameTemplate)
-	: lycee::filtergraph::AbstractPanelViewFactory(nameTemplate)
+lycee::filtergraph::FilterPanelViewFactory::FilterPanelViewFactory()
+	: lycee::filtergraph::AbstractPanelViewFactory(TEXT("FILTER[%03d]"))
 {
 	;
 }
@@ -94,8 +94,8 @@ lycee::filtergraph::OutputPanelViewFactory::~OutputPanelViewFactory()
 	;
 }
 
-lycee::filtergraph::OutputPanelViewFactory::OutputPanelViewFactory(const lycee_string &nameTemplate)
-	: lycee::filtergraph::AbstractPanelViewFactory(nameTemplate)
+lycee::filtergraph::OutputPanelViewFactory::OutputPanelViewFactory()
+	: lycee::filtergraph::AbstractPanelViewFactory(TEXT("OUTPUT[%03d]"))
 {
 	;
 }
